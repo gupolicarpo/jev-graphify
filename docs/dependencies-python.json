@@ -1,0 +1,340 @@
+[
+  {
+    "name": "graphifyy",
+    "version": "0.9.107",
+    "license": "Apache-2.0",
+    "classifiers": [],
+    "projectUrls": [
+      "Homepage, https://graphify.com",
+      "Documentation, https://docs.graphify.com",
+      "Repository, https://github.com/Graphify-Labs/graphify",
+      "Issues, https://github.com/Graphify-Labs/graphify/issues"
+    ]
+  },
+  {
+    "name": "networkx",
+    "version": "3.7",
+    "license": "BSD-3-Clause",
+    "classifiers": [],
+    "projectUrls": [
+      "Homepage, https://networkx.org/",
+      "Bug Tracker, https://github.com/networkx/networkx/issues",
+      "Documentation, https://networkx.org/documentation/stable/",
+      "Source Code, https://github.com/networkx/networkx"
+    ]
+  },
+  {
+    "name": "numpy",
+    "version": "2.5.4",
+    "license": "BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0",
+    "classifiers": [],
+    "projectUrls": [
+      "homepage, https://numpy.org",
+      "documentation, https://numpy.org/doc/",
+      "source, https://github.com/numpy/numpy",
+      "download, https://pypi.org/project/numpy/#files",
+      "tracker, https://github.com/numpy/numpy/issues",
+      "release notes, https://numpy.org/doc/stable/release"
+    ]
+  },
+  {
+    "name": "PyYAML",
+    "version": "6.0.3",
+    "license": "MIT",
+    "classifiers": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "projectUrls": [
+      "Bug Tracker, https://github.com/yaml/pyyaml/issues",
+      "CI, https://github.com/yaml/pyyaml/actions",
+      "Documentation, https://pyyaml.org/wiki/PyYAMLDocumentation",
+      "Mailing lists, http://lists.sourceforge.net/lists/listinfo/yaml-core",
+      "Source Code, https://github.com/yaml/pyyaml"
+    ]
+  },
+  {
+    "name": "RapidFuzz",
+    "version": "3.14.6",
+    "license": "MIT",
+    "classifiers": [],
+    "projectUrls": [
+      "Homepage, https://github.com/rapidfuzz/RapidFuzz",
+      "Documentation, https://rapidfuzz.github.io/RapidFuzz/",
+      "Repository, https://github.com/rapidfuzz/RapidFuzz.git",
+      "Issues, https://github.com/rapidfuzz/RapidFuzz/issues",
+      "Changelog, https://github.com/rapidfuzz/RapidFuzz/blob/main/CHANGELOG.rst"
+    ]
+  },
+  {
+    "name": "tree-sitter",
+    "version": "0.25.2",
+    "license": "not-declared",
+    "classifiers": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "projectUrls": [
+      "Homepage, https://tree-sitter.github.io/tree-sitter/",
+      "Source, https://github.com/tree-sitter/py-tree-sitter",
+      "Documentation, https://tree-sitter.github.io/py-tree-sitter/",
+      "Discord, https://discord.gg/w7nTvsVJhm",
+      "Matrix, https://matrix.to/#/#tree-sitter-chat:matrix.org"
+    ]
+  },
+  {
+    "name": "tree-sitter-bash",
+    "version": "0.25.1",
+    "license": "MIT",
+    "classifiers": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "projectUrls": [
+      "Homepage, https://github.com/tree-sitter/tree-sitter-bash"
+    ]
+  },
+  {
+    "name": "tree-sitter-c",
+    "version": "0.24.2",
+    "license": "MIT",
+    "classifiers": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "projectUrls": [
+      "Homepage, https://github.com/tree-sitter/tree-sitter-c"
+    ]
+  },
+  {
+    "name": "tree-sitter-c-sharp",
+    "version": "0.23.5",
+    "license": "MIT",
+    "classifiers": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "projectUrls": [
+      "Homepage, https://github.com/tree-sitter/tree-sitter-c-sharp"
+    ]
+  },
+  {
+    "name": "tree-sitter-cpp",
+    "version": "0.23.4",
+    "license": "MIT",
+    "classifiers": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "projectUrls": [
+      "Homepage, https://github.com/tree-sitter/tree-sitter-cpp"
+    ]
+  },
+  {
+    "name": "tree-sitter-elixir",
+    "version": "0.3.5",
+    "license": "Apache-2.0",
+    "classifiers": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "projectUrls": [
+      "Homepage, https://github.com/elixir-lang/tree-sitter-elixir"
+    ]
+  },
+  {
+    "name": "tree-sitter-fortran",
+    "version": "0.6.0",
+    "license": "MIT",
+    "classifiers": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "projectUrls": [
+      "Homepage, https://github.com/stadelmanma/tree-sitter-fortran"
+    ]
+  },
+  {
+    "name": "tree-sitter-go",
+    "version": "0.25.0",
+    "license": "MIT",
+    "classifiers": [],
+    "projectUrls": [
+      "Homepage, https://github.com/tree-sitter/tree-sitter-go"
+    ]
+  },
+  {
+    "name": "tree-sitter-groovy",
+    "version": "0.1.2",
+    "license": "MIT",
+    "classifiers": [],
+    "projectUrls": [
+      "Homepage, https://github.com/amaanq/tree-sitter-groovy"
+    ]
+  },
+  {
+    "name": "tree-sitter-java",
+    "version": "0.23.5",
+    "license": "MIT",
+    "classifiers": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "projectUrls": [
+      "Homepage, https://github.com/tree-sitter/tree-sitter-java"
+    ]
+  },
+  {
+    "name": "tree-sitter-javascript",
+    "version": "0.25.0",
+    "license": "MIT",
+    "classifiers": [],
+    "projectUrls": [
+      "Homepage, https://github.com/tree-sitter/tree-sitter-javascript"
+    ]
+  },
+  {
+    "name": "tree-sitter-json",
+    "version": "0.24.8",
+    "license": "MIT",
+    "classifiers": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "projectUrls": [
+      "Homepage, https://github.com/tree-sitter/tree-sitter-json"
+    ]
+  },
+  {
+    "name": "tree-sitter-julia",
+    "version": "0.23.1",
+    "license": "MIT",
+    "classifiers": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "projectUrls": [
+      "Homepage, https://github.com/tree-sitter/tree-sitter-julia"
+    ]
+  },
+  {
+    "name": "tree-sitter-kotlin",
+    "version": "1.1.0",
+    "license": "MIT",
+    "classifiers": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "projectUrls": [
+      "Homepage, https://github.com/tree-sitter-grammars/tree-sitter-kotlin"
+    ]
+  },
+  {
+    "name": "tree-sitter-lua",
+    "version": "0.5.0",
+    "license": "MIT",
+    "classifiers": [],
+    "projectUrls": [
+      "Homepage, https://github.com/tree-sitter-grammars/tree-sitter-lua"
+    ]
+  },
+  {
+    "name": "tree-sitter-objc",
+    "version": "3.0.2",
+    "license": "MIT",
+    "classifiers": [],
+    "projectUrls": [
+      "Homepage, https://github.com/tree-sitter-grammars/tree-sitter-objc"
+    ]
+  },
+  {
+    "name": "tree-sitter-php",
+    "version": "0.24.1",
+    "license": "MIT",
+    "classifiers": [],
+    "projectUrls": [
+      "Homepage, https://github.com/tree-sitter/tree-sitter-php"
+    ]
+  },
+  {
+    "name": "tree-sitter-powershell",
+    "version": "0.26.4",
+    "license": "MIT",
+    "classifiers": [],
+    "projectUrls": [
+      "Homepage, https://github.com/airbus-cert/tree-sitter-powershell"
+    ]
+  },
+  {
+    "name": "tree-sitter-python",
+    "version": "0.25.0",
+    "license": "MIT",
+    "classifiers": [],
+    "projectUrls": [
+      "Homepage, https://github.com/tree-sitter/tree-sitter-python"
+    ]
+  },
+  {
+    "name": "tree-sitter-ruby",
+    "version": "0.23.1",
+    "license": "MIT",
+    "classifiers": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "projectUrls": [
+      "Homepage, https://github.com/tree-sitter/tree-sitter-ruby"
+    ]
+  },
+  {
+    "name": "tree-sitter-rust",
+    "version": "0.24.2",
+    "license": "MIT",
+    "classifiers": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "projectUrls": [
+      "Homepage, https://github.com/tree-sitter/tree-sitter-rust"
+    ]
+  },
+  {
+    "name": "tree-sitter-scala",
+    "version": "0.26.12",
+    "license": "MIT",
+    "classifiers": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "projectUrls": [
+      "Homepage, https://github.com/tree-sitter/tree-sitter-scala"
+    ]
+  },
+  {
+    "name": "tree-sitter-swift",
+    "version": "0.7.4",
+    "license": "MIT",
+    "classifiers": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "projectUrls": [
+      "Homepage, https://github.com/alex-pinkus/tree-sitter-swift"
+    ]
+  },
+  {
+    "name": "tree-sitter-typescript",
+    "version": "0.23.2",
+    "license": "MIT",
+    "classifiers": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "projectUrls": [
+      "Homepage, https://github.com/tree-sitter/tree-sitter-typescript"
+    ]
+  },
+  {
+    "name": "tree-sitter-verilog",
+    "version": "1.0.3",
+    "license": "MIT",
+    "classifiers": [
+      "License :: OSI Approved :: MIT License"
+    ],
+    "projectUrls": [
+      "Homepage, https://github.com/tree-sitter/tree-sitter-verilog"
+    ]
+  },
+  {
+    "name": "tree-sitter-zig",
+    "version": "1.1.2",
+    "license": "MIT",
+    "classifiers": [],
+    "projectUrls": [
+      "Homepage, https://github.com/tree-sitter-grammars/tree-sitter-zig"
+    ]
+  }
+]

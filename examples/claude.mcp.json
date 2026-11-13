@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "jev-graphify": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "C:/CAMINHO/jev-graphify/src/cli.mjs",
+        "mcp",
+        "--project",
+        "C:/CAMINHO/meu-projeto"
+      ]
+    }
+  }
+}

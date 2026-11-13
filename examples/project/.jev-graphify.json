@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "sources": [
+    "calc.py",
+    "policy.md"
+  ],
+  "skills": [
+    "skills/rounding/SKILL.md"
+  ]
+}

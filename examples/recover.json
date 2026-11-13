@@ -1,0 +1,12 @@
+{
+  "task": "Corrigir arredondamento de faturas",
+  "failure": "Teste de fatura falhou: esperado 1.01 para entrada 1.005; recebido 1.00.",
+  "diagnosis": {
+    "kind": "memory_gap",
+    "reason": "Falta consultar a regra de arredondamento do projeto.",
+    "evidence": "esperado 1.01 para entrada 1.005",
+    "queries": [
+      "Arredondamento de faturas ROUND_HALF_UP"
+    ]
+  }
+}

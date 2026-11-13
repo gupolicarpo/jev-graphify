@@ -1,0 +1,10 @@
+{
+  "name": "jev-graphify",
+  "version": "0.5.0",
+  "description": "Memória local por projeto com Graphify e seleção opcional pelo Jev.",
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "author": {
+    "name": "Jev Graphify contributors"
+  }
+}

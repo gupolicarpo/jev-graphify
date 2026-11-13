@@ -1,0 +1,24 @@
+{
+  "name": "jev-graphify",
+  "version": "0.5.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "description": "Mem\u00f3ria local por projeto com Graphify e sele\u00e7\u00e3o opcional pelo Jev.",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "test": "node --test --test-force-exit test/*.test.mjs",
+    "demo": "node examples/demo.mjs",
+    "test:graphify": "node --test test/graphify.integration.mjs",
+    "mcp": "node src/cli.mjs mcp"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "2.4.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/client": "2.4.0"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "date": "2026-11-13",
+  "version": "0.5.0",
+  "environment": {
+    "os": "Windows x64",
+    "node": "24.19.0",
+    "npm": "11.17.0",
+    "python": "3.13.15",
+    "graphifyy": "0.9.107",
+    "mcpSdk": "2.4.0"
+  },
+  "unitAndMcpTests": 117,
+  "realGraphifyIntegrationTests": 2,
+  "demo": "real failing/passing Python test; real Graphify; simulated Jev, review and executor",
+  "cleanInstallFromZip": "not repeated for 0.5.0 (last repeated on 0.4.0: npm ci and unit/MCP tests)",
+  "realJevCalls": "yes, with the published service on 2026-11-12: skill selection, memory recall and project search (see docs/COMPATIBILIDADE.md for data, counts and limits); jev_route and memory_recover not exercised against the real service",
+  "data": "fictional data in automated tests; real-service measurements used fictional data plus one private project of the tester",
+  "hostSessions": {
+    "codex": "not executed",
+    "claudeCode": "not executed"
+  },
+  "notRepeatedSince_0.1.1": [
+    "claude plugin validate",
+    "portable manifest schema validation",
+    "npm audit"
+  ],
+  "pythonVulnerabilityAudit": "not performed",
+  "linuxCheck": {
+    "os": "Ubuntu 24.04 (WSL2)",
+    "node": "22.22.0",
+    "python": "3.12.3",
+    "unitAndMcpTests": "117/117",
+    "realGraphifyIntegrationTests": "2/2",
+    "demo": "passed"
+  },
+  "macosCheck": "not executed on a real machine; CI workflow provided, not yet run"
+}

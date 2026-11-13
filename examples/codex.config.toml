@@ -1,0 +1,9 @@
+# Exemplo: mescle em .codex/config.toml do SEU projeto. Substitua os caminhos.
+[mcp_servers.jev_graphify]
+command = "node"
+args = ["C:/CAMINHO/jev-graphify/src/cli.mjs", "mcp", "--project", "C:/CAMINHO/meu-projeto"]
+env_vars = ["JEV_GRAPHIFY_PYTHON"]
+startup_timeout_sec = 10
+tool_timeout_sec = 90
+# Jev (pago): acrescente JEV_API_KEY em env_vars; com a chave presente ele é usado. Para desligar, acrescente "--no-jev" em args.
+# Skills sob demanda: acrescente "--skills-dir", "C:/CAMINHO/minhas-skills" em args.

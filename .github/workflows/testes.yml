@@ -1,0 +1,33 @@
+name: testes
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  testes:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Dependências do Node
+        run: npm ci --ignore-scripts
+      - name: Testes (Jev simulado, sem rede)
+        run: npm test
+      - name: Graphify real e demonstração
+        shell: bash
+        run: |
+          python -m venv .venv-graphify
+          PY=$(node -p "require('path').resolve(process.platform === 'win32' ? '.venv-graphify/Scripts/python.exe' : '.venv-graphify/bin/python')")
+          "$PY" -m pip install --disable-pip-version-check -r requirements-graphify.lock
+          JEV_GRAPHIFY_PYTHON="$PY" npm run test:graphify
+          JEV_GRAPHIFY_PYTHON="$PY" npm run demo
