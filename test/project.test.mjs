@@ -36,7 +36,7 @@ test('configuração code: raízes e exclusões inválidas', async t => {
   const { root } = await fixture(t);
   assert.equal(await codeConfig(root), null);
   const bad = [{}, { roots: [] }, { roots: ['..'] }, { roots: ['/abs'] }, { roots: ['a\\b'] }, { roots: ['C:x'] }, { roots: ['.git'] }, { roots: ['a/../b'] }, { roots: [1] }, { roots: Array(21).fill('a') }, { roots: ['.'], exclude: [1] }, { roots: ['.'], exclude: Array(201).fill('x') }, { roots: ['.'], exclude: 'x' }, 'x', null];
-  for (const code of bad) { await configure(root, code); await assert.rejects(codeConfig(root), /Configuração inválida em code: /, JSON.stringify(code)); }
+  for (const code of bad) { await configure(root, code); await assert.rejects(codeConfig(root), /Invalid configuration in code: /, JSON.stringify(code)); }
   await configure(root, { roots: ['.', 'src/app'], exclude: ['Backups'] });
   assert.deepEqual(await codeConfig(root), { roots: ['.', 'src/app'], exclude: ['Backups'] });
   assert.equal((await core.status(root)).sources, 3); // inventory aceita a chave nova
@@ -56,7 +56,7 @@ test('walkCode: recursão, extensões, pastas embutidas, exclude, junction, 1 Mi
   const code = { roots: ['src'], exclude: ['backups', '_CHECKPOINTS', 'Src/Legacy/Old'] };
   const r = await walkCode(root, code);
   assert.deepEqual(r.files.map(f => f.rel), ['src/a.cs', 'src/b.py', 'src/deep/x/c.ts', 'src/legacy/ok.py', 'src/legacyx/ok.py']);
-  assert.deepEqual(r.skipped, [{ rel: 'src/grande.py', reason: 'maior que 1 MiB' }]);
+  assert.deepEqual(r.skipped, [{ rel: 'src/grande.py', reason: 'larger than 1 MiB' }]);
   assert.ok(r.files.every(f => f.size > 0 && f.mtimeMs > 0));
   const both = await walkCode(root, { roots: ['.', 'src'], exclude: ['alvo'] });
   assert.equal(both.files.length, new Set(both.files.map(f => f.rel)).size);
@@ -68,7 +68,7 @@ test('walkCode: acima de 6000 arquivos falha', async t => {
   const { root } = await fixture(t);
   await mkdir(resolve(root, 'm'));
   await Promise.all(Array.from({ length: 6001 }, (_, i) => writeFile(resolve(root, 'm', 'f' + i + '.py'), 'x')));
-  await assert.rejects(walkCode(root, { roots: ['m'] }), /Código acima do limite/);
+  await assert.rejects(walkCode(root, { roots: ['m'] }), /Code over the limit/);
 });
 test('fingerprint muda com o tamanho do arquivo', async t => {
   const { root } = await fixture(t);
@@ -92,9 +92,9 @@ test('projectStatus: missing, current e stale', async t => {
 test('findInProject: validação e índice ausente', async t => {
   const { root } = await fixture(t);
   await configure(root, { roots: ['.'] });
-  for (const q of ['', '  ', 'x'.repeat(4001), 5]) await assert.rejects(findInProject(root, q), /Consulta inválida/);
-  for (const top of [0, 21, 1.5, '3']) await assert.rejects(findInProject(root, 'a', { top }), /Quantidade inválida/);
-  for (const nucleos of [0, 31, 2.5]) await assert.rejects(findInProject(root, 'a', { nucleos }), /Número de núcleos inválido/);
+  for (const q of ['', '  ', 'x'.repeat(4001), 5]) await assert.rejects(findInProject(root, q), /Invalid query/);
+  for (const top of [0, 21, 1.5, '3']) await assert.rejects(findInProject(root, 'a', { top }), /Invalid amount/);
+  for (const nucleos of [0, 31, 2.5]) await assert.rejects(findInProject(root, 'a', { nucleos }), /Invalid number of clusters/);
   assert.equal((await findInProject(root, 'a')).status, 'missing');
 });
 const small = async t => {
@@ -187,8 +187,8 @@ test('findInProject: índice com muitos núcleos e módulos usa três etapas (m�
   const [one, two, three] = calls;
   assert.equal(texts(one).length, 10);
   assert.ok(texts(one).every(q => q.startsWith('Would any source file in the code module described here') && q.includes('Module: ') && !q.includes('Group: ') && !q.includes('File: ')));
-  const card = texts(one).find(q => q.includes('Módulo: mod2 '));
-  assert.ok(card.includes('| 15 arquivos: ') && card.includes('Subpastas: sub') && card.includes('Símbolos: ALTO') && card.includes('top2') && !/Subpastas: [^|]*top2/.test(card));
+  const card = texts(one).find(q => q.includes('Module: mod2 '));
+  assert.ok(card.includes('| 15 files: ') && card.includes('Subfolders: sub') && card.includes('Symbols: ALTO') && card.includes('top2') && !/Subfolders: [^|]*top2/.test(card));
   assert.equal(texts(two).length, 14); assert.ok(texts(two).every(q => q.startsWith('Would any source file in the group') && !q.includes('Module: ')));
   assert.ok(texts(two).every(q => q.includes('ALTO') || q.includes('MEDIO')));
   assert.equal(texts(three).length, 5); assert.ok(texts(three).every(q => q.startsWith('Would the source file described here') && !q.includes('Module: ') && !q.includes('Group: ')));
@@ -205,7 +205,7 @@ test('findInProject: modulos limita os módulos escolhidos e o padrão é 5', as
   calls.length = 0;
   const def = await findInProject(root, 'x', { key, request });
   assert.equal(def.modulos.length, 5); assert.deepEqual(def.modulos.map(m => m.nome).slice(0, 2), ['mod2', 'mod5']); assert.equal(Object.keys(calls[1].questions).length, 35);
-  for (const bad of [0, 21, 1.5, '3']) await assert.rejects(findInProject(root, 'a', { modulos: bad }), /Número de módulos inválido \(1–20\)\./);
+  for (const bad of [0, 21, 1.5, '3']) await assert.rejects(findInProject(root, 'a', { modulos: bad }), /Invalid number of modules \(1–20\)\./);
 });
 test('findInProject: arquivos na raiz formam o módulo (raiz)', async t => {
   const root = await modular(t, { alto: '(raiz)', medio: 'mod5', rootCluster: true }), calls = [], { request } = scripted({ calls });
@@ -256,10 +256,10 @@ test('update e status do núcleo: sem code não há chave project; só code não
   // Só `code` (sem fontes): a parte clássica não precisa do Graphify; com Python inexistente só o índice de código falha.
   await writeFile(resolve(root, '.jev-graphify.json'), JSON.stringify({ version: 1, sources: [], skills: [], code: { roots: ['src'] } }));
   await write(root, 'src/a.py');
-  await assert.rejects(core.update(root, { python: resolve(root, 'sem-python') }), /Python não encontrado/);
+  await assert.rejects(core.update(root, { python: resolve(root, 'sem-python') }), /Python not found/);
   assert.deepEqual((await readdir(resolve(root, '.jev-graphify'))).filter(n => n.startsWith('code-stage-')), []);
   await configure(root, { roots: ['vazio'] }); await mkdir(resolve(root, 'vazio'));
-  await assert.rejects(core.update(root), /Nenhum arquivo de código encontrado/);
+  await assert.rejects(core.update(root), /No code file found/);
 });
 test('modulesOf: módulo grande é dividido pelas subpastas, até três níveis; pequeno fica inteiro', async () => {
   const { modulesOf, BIG_MODULE } = await import('../src/project.mjs');

@@ -74,7 +74,7 @@ test('loadMemory: arquivo grande ou fora de UTF-8 vai para skipped', async t => 
 });
 test('loadMemory: memoryDirs relativo, inexistente ou arquivo é recusado', async t => {
   const { root } = await fixture(t);
-  for (const bad of ['relativo/pasta', resolve(root, 'nao-existe'), resolve(root, 'policy.md')]) await assert.rejects(loadMemory(root, { memoryDirs: [bad], autoMemory: false }), /Pasta de memória inválida/);
+  for (const bad of ['relativo/pasta', resolve(root, 'nao-existe'), resolve(root, 'policy.md')]) await assert.rejects(loadMemory(root, { memoryDirs: [bad], autoMemory: false }), /Invalid memory folder/);
 });
 test('loadMemory: acha a pasta automática do Claude por home injetada e respeita autoMemory false', async t => {
   const { root } = await fixture(t), real = await realpath(root), home = resolve(root, 'home');
@@ -90,18 +90,18 @@ test('loadProject: trechos de policy.md e code.py; sem configuração, vazio', a
   assert.equal(r.files, 2); assert.deepEqual(r.items.map(i => i.source), ['policy.md', 'code.py']);
   assert.equal(r.items[0].kind, 'project'); assert.equal(r.items[0].title, 'Faturas'); assert.match(r.items[0].text, /Aurora/); assert.equal(r.items[1].title, 'linhas 1–3');
   await writeFile(resolve(root, '.jev-graphify.json'), JSON.stringify({ version: 1, sources: ['../fora.md'], skills: [] }));
-  await assert.rejects(loadProject(root), /Caminho relativo inválido/);
+  await assert.rejects(loadProject(root), /Invalid or private relative path/);
   await writeFile(resolve(root, '.jev-graphify.json'), JSON.stringify({ version: 1, sources: ['a.bin'], skills: [] }));
-  await assert.rejects(loadProject(root), /Tipo de arquivo não suportado: a\.bin/);
+  await assert.rejects(loadProject(root), /Unsupported file type: a\.bin/);
   const vazio = await fixture(t); await writeFile(resolve(vazio.root, '.jev-graphify.json'), '{}');
   const { rm } = await import('node:fs/promises'); await rm(resolve(vazio.root, '.jev-graphify.json'));
   assert.deepEqual(await loadProject(vazio.root), { items: [], files: 0 });
 });
 test('consulta, teto e privacidade inválidos são recusados', async t => {
   const { root } = await fixture(t);
-  for (const bad of ['', '  ', 'x'.repeat(4001), 5]) await assert.rejects(recall(root, bad, opts(root)), /Consulta inválida \(1–4000 caracteres\)\./);
-  for (const bad of [199, 8001, 1.5, '1500']) await assert.rejects(recall(root, 'a', opts(root, { budget: bad })), /Teto de tokens inválido \(200–8000\)\./);
-  await assert.rejects(recall(root, 'a', opts(root, { privacy: 'x' })), /Privacidade inválida: use completo ou ficha\./);
+  for (const bad of ['', '  ', 'x'.repeat(4001), 5]) await assert.rejects(recall(root, bad, opts(root)), /Invalid query \(1–4000 characters\)\./);
+  for (const bad of [199, 8001, 1.5, '1500']) await assert.rejects(recall(root, 'a', opts(root, { budget: bad })), /Invalid token budget \(200–8000\)\./);
+  await assert.rejects(recall(root, 'a', opts(root, { privacy: 'x' })), /Invalid privacy: use completo or ficha\./);
 });
 test('recall sem chave: ranking local, nenhuma requisição, dentro do teto', async t => {
   const { root } = await fixture(t); let calls = 0;
@@ -237,7 +237,7 @@ test('recall: ALTO só no corpo fica de fora do top e entra com topFiles grande 
   // deep lê o acervo inteiro, sem etapa de fichas, e também acha o detalhe que só está no corpo.
   const deep = await recall(root, 'tarefa', opts(root, { key, request: scripted().request, deep: true, budget: 4000 }));
   assert.equal(deep.strategy, 'full'); assert.equal(deep.stages, undefined); assert.ok(deep.items.some(i => i.source === 'memory/m25.md'));
-  await assert.rejects(recall(root, 'tarefa', opts(root, { deep: 'sim' })), /deep inválida/);
+  await assert.rejects(recall(root, 'tarefa', opts(root, { deep: 'sim' })), /Invalid deep option/);
 });
 test('recall: ficha usa só cartas, nunca envia corpo e ordena por arquivo e parte', async t => {
   const { root } = await fixture(t), bodies = [], marker = 'MARCADOR_FICHA_ZQX';
@@ -263,7 +263,7 @@ test('recall: falha na fase 1 ou na fase 2 dá unavailable com ranking local', a
 });
 test('recall: topFiles inválido é recusado', async t => {
   const { root } = await fixture(t);
-  for (const bad of [0, 51, 2.5, '3']) await assert.rejects(recall(root, 'a', opts(root, { topFiles: bad })), /Número de arquivos inválido \(1–50\)\./);
+  for (const bad of [0, 51, 2.5, '3']) await assert.rejects(recall(root, 'a', opts(root, { topFiles: bad })), /Invalid number of files \(1–50\)\./);
 });
 test('recall: related aponta memórias ligadas por [[nome]] que não foram devolvidas', async t => {
   const { root } = await fixture(t);

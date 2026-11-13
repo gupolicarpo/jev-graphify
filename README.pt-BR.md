@@ -1,4 +1,4 @@
-# Jev + Graphify — 0.5.1
+# Jev + Graphify — 0.5.2
 
 Memória persistente por projeto para ajudar o agente a encontrar regras, escolher procedimentos e retomar uma tarefa depois de um teste falhar. Pacote comunitário independente; não é um produto oficial de OpenAI, Anthropic, Graphify ou TypeSafe.
 

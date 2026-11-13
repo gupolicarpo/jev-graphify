@@ -62,4 +62,4 @@ for file, group in sorted(by_file.items()):
 nucleos = [{'id': c, 'rotulos': labels(g)[:15]} for c, g in sorted(by_comm.items())]
 summary = {'graphify': version('graphifyy'), 'nodes': len(nodes), 'edges': len(links), 'communities': len(by_comm), 'files': files, 'nucleos': nucleos}
 (out / 'project-summary.json').write_text(json.dumps(summary, ensure_ascii=False), encoding='utf-8')
-print('project-summary: %d arquivos, %d nos, %d nucleos' % (len(files), len(nodes), len(by_comm)))
+print('project-summary: %d files, %d nodes, %d clusters' % (len(files), len(nodes), len(by_comm)))

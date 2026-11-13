@@ -1,6 +1,6 @@
 {
   "date": "2026-11-13",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "environment": {
     "os": "Windows x64",
     "node": "24.19.0",

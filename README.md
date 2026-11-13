@@ -134,7 +134,7 @@ node /path/to/jev-graphify/src/cli.mjs find --project /path/to/your-project --in
 - With the default card-only privacy mode, recall can miss a detail that appears only in the middle of a note.
 - The relevance thresholds were tuned on small test sets.
 - Codex memories and session transcripts are not read.
-- Most documentation is in Portuguese.
+- Tool descriptions, messages and the agent skill are in English. The detailed measurement notes and the API notes are still in Portuguese.
 
 ## License
 

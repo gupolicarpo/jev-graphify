@@ -1,7 +1,7 @@
 {
   "name": "jev-graphify",
-  "version": "0.5.1",
-  "description": "Memória local por projeto com Graphify e seleção opcional pelo Jev.",
+  "version": "0.5.2",
+  "description": "Gives coding agents the right file, memory or skill at low token cost: Graphify organises, Jev picks.",
   "license": "MIT",
   "author": {
     "name": "Jev Graphify contributors"

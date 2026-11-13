@@ -1,11 +1,11 @@
-name: testes
+name: tests
 
 on:
   push:
   pull_request:
 
 jobs:
-  testes:
+  tests:
     strategy:
       fail-fast: false
       matrix:
@@ -19,11 +19,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - name: Dependências do Node
+      - name: Node dependencies
         run: npm ci --ignore-scripts
-      - name: Testes (Jev simulado, sem rede)
+      - name: Tests (simulated Jev, no network)
         run: npm test
-      - name: Graphify real e demonstração
+      - name: Real Graphify and demo
         shell: bash
         run: |
           python -m venv .venv-graphify

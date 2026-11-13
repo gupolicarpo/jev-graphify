@@ -21,13 +21,13 @@ test('consulta desatualizada é bloqueada', async t => {
   const { root } = await fixture(t);
   await writeFile(resolve(root, 'policy.md'), '# Nova regra');
   assert.equal((await core.status(root)).status, 'stale');
-  await assert.rejects(core.search(root, 'regra'), /desatualizada/);
+  await assert.rejects(core.search(root, 'regra'), /out of date/);
 });
 test('índice copiado de outro projeto e IDs estranhos são recusados', async t => {
   const a = await fixture(t), b = await fixture(t);
-  await assert.rejects(core.read(a.root, 'unknown'), /não pertence/);
+  await assert.rejects(core.read(a.root, 'unknown'), /does not belong/);
   await cp(resolve(a.root, '.jev-graphify/index.json'), resolve(b.root, '.jev-graphify/index.json'));
-  await assert.rejects(core.search(b.root, 'faturas'), /outro projeto/);
+  await assert.rejects(core.search(b.root, 'faturas'), /another project/);
 });
 test('fontes fora do escopo, privadas e grandes são recusadas', async t => {
   const { root, config } = await fixture(t);
@@ -37,13 +37,13 @@ test('fontes fora do escopo, privadas e grandes são recusadas', async t => {
   }
   await writeFile(resolve(root, 'large.md'), 'x'.repeat(131073));
   await writeFile(resolve(root, '.jev-graphify.json'), JSON.stringify({ ...config, sources: ['large.md'] }));
-  await assert.rejects(core.status(root), /grande demais/);
+  await assert.rejects(core.status(root), /too large/);
 });
 test('diretórios com junction não escapam do projeto', async t => {
   const a = await fixture(t), b = await fixture(t);
   await symlink(b.root, resolve(a.root, 'linked'), 'junction');
   await writeFile(resolve(a.root, '.jev-graphify.json'), JSON.stringify({ version: 1, sources: ['linked/policy.md'], skills: [] }));
-  await assert.rejects(core.status(a.root), /simbólicos/);
+  await assert.rejects(core.status(a.root), /Symbolic links/);
 });
 test('route usa Jev simulado e inclui contexto com versão', async t => {
   const { root } = await fixture(t), result = await core.route(root, 'Corrigir faturas', simulated);
@@ -94,7 +94,7 @@ test('snapshot adulterado não pode alegar o hash de uma fonte íntegra', async 
   index.records[0].body = 'Regra adulterada';
   await writeFile(resolve(root, '.jev-graphify/index.json'), JSON.stringify(index));
   assert.equal((await core.status(root)).status, 'invalid');
-  await assert.rejects(core.search(root, 'faturas'), /Snapshots/);
+  await assert.rejects(core.search(root, 'faturas'), /snapshots/);
 });
 test('busca aceita variações da palavra sem casar termos curtos diferentes', async t => {
   const { root } = await fixture(t);
@@ -116,13 +116,13 @@ test('recuperação com várias consultas ordena pelo melhor score de cada refer
 test('trava de atualização: a ativa bloqueia, a residual é assumida', async t => {
   const { root } = await fixture(t), lock = resolve(root, '.jev-graphify/update.lock');
   await writeFile(lock, JSON.stringify({ pid: process.pid }));
-  await assert.rejects(core.update(root), /em andamento/);
+  await assert.rejects(core.update(root), /already running/);
   // Dono já terminou: assume na hora.
   await writeFile(lock, JSON.stringify({ pid: spawnSync(process.execPath, ['-e', '']).pid }));
   assert.equal((await core.update(root)).status, 'unchanged');
   // Trava sem PID (formato da 0.1.1): só expira pela idade.
   await writeFile(lock, '');
-  await assert.rejects(core.update(root), /em andamento/);
+  await assert.rejects(core.update(root), /already running/);
   const old = new Date(Date.now() - core.lockMaxAge - 1000); await utimes(lock, old, old);
   assert.equal((await core.update(root)).status, 'unchanged');
   await assert.rejects(access(lock), { code: 'ENOENT' });
@@ -132,8 +132,8 @@ test('erros de fonte dizem qual arquivo falhou', async t => {
   const failing = async source => { await writeFile(resolve(root, '.jev-graphify.json'), JSON.stringify({ ...config, sources: [source] })); return core.status(root); };
   await writeFile(resolve(root, 'utf16.md'), Buffer.from('﻿Regra', 'utf16le'));
   await assert.rejects(failing('utf16.md'), /UTF-8.*utf16\.md/);
-  await assert.rejects(failing('dados.csv'), /não suportado: dados\.csv/);
-  await assert.rejects(failing('src/config/loader.py'), /privado.*src\/config\/loader\.py/);
+  await assert.rejects(failing('dados.csv'), /Unsupported file type: dados\.csv/);
+  await assert.rejects(failing('src/config/loader.py'), /[Pp]rivate.*src\/config\/loader\.py/);
 });
 test('Python: variável explícita, depois o ambiente ao lado do plugin, depois o do sistema', async () => {
   const { defaultPython } = await import('../src/graphify.mjs');
@@ -144,5 +144,5 @@ test('Python: variável explícita, depois o ambiente ao lado do plugin, depois 
 test('falha do Graphify mostra o motivo real', async t => {
   const { root, records } = await fixture(t);
   const { generateGraph } = await import('../src/graphify.mjs');
-  await assert.rejects(generateGraph(root, records, { python: 'python-inexistente-jev' }), /Python não encontrado: python-inexistente-jev/);
+  await assert.rejects(generateGraph(root, records, { python: 'python-inexistente-jev' }), /Python not found: python-inexistente-jev/);
 });

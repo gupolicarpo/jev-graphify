@@ -1,4 +1,4 @@
-# Compatibilidade verificada — 0.5.1 (histórico desde a 0.1.1)
+# Compatibilidade verificada — 0.5.2 (histórico desde a 0.1.1)
 
 Data: 12/11/2026. Ambiente: Windows x64, Node.js 24.19.0, npm 11.17.0, CPython 3.13.15. Todos os dados usados foram fictícios. Nenhuma chamada real paga a Jev ou LLM foi feita.
 
@@ -106,3 +106,9 @@ Os logs de trabalho com caminhos locais ficam fora do ZIP. O resumo distribuído
 - README principal em inglês; o texto em português fica em `README.pt-BR.md`.
 - O primeiro envio ao GitHub rodou o teste automático com sucesso em Windows, macOS e Linux (Node 22, Python 3.13), incluindo o Graphify real e a demonstração: o macOS passa a contar como verificado.
 - 119 testes automáticos.
+
+## Mudanças na 0.5.2
+
+- **Textos em inglês.** As descrições das ferramentas, as mensagens (erros, `setup`, notas dos resultados), a skill do plugin e os rótulos das fichas enviadas ao Jev passaram para o inglês. Nomes de campos, opções e valores do formato de dados não mudaram (`nucleos`, `modulos`, `completo`, `ficha` etc.).
+- Como os rótulos das fichas mudaram, as 24 perguntas de referência foram repetidas no projeto real com o Jev real (13/11/2026): 18 em 1º lugar, 22 entre os 3 e 24 entre os 5, com cerca de 63 mil tokens por pergunta, sem piora.
+- Instalação do zero pelo `setup` verificada em Windows (88 s) e Linux; e, no Windows, o caminho completo até a busca pelo servidor MCP com o Jev real num projeto de 27 arquivos: arquivo certo em 1º lugar em 5 de 6 perguntas e entre os 3 em 6 de 6.

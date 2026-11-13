@@ -38,7 +38,7 @@ test('jevGate: turned_off, no_key, daily_limit, limite 0 e teto inválido', asyn
   assert.deepEqual(await jevGate(root, { key, dailyTokens: 100 }), { jev: false, reason: 'daily_limit', daily: { used: 100, limit: 100 } });
   assert.deepEqual(await jevGate(root, { key, dailyTokens: 101 }), { jev: true });
   assert.deepEqual(await jevGate(root, { key, dailyTokens: 0 }), { jev: true });
-  for (const bad of [-1, 1.5, '10', NaN]) await assert.rejects(jevGate(root, { key, dailyTokens: bad }), /Teto diário inválido: use um inteiro maior ou igual a zero\./);
+  for (const bad of [-1, 1.5, '10', NaN]) await assert.rejects(jevGate(root, { key, dailyTokens: bad }), /Invalid daily limit: use an integer greater than or equal to zero\./);
 });
 test('acima do teto diário recall e findSkill não fazem requisições e voltam ao modo local', async t => {
   const { root } = await fixture(t), net = counting();
@@ -48,7 +48,7 @@ test('acima do teto diário recall e findSkill não fazem requisições e voltam
   const s = await findSkill(root, 'Corrigir faturas', { key, request: net.request, dailyTokens: 500 });
   assert.equal(s.status, 'disabled'); assert.equal(s.reason, 'daily_limit'); assert.deepEqual(s.daily, { used: 500, limit: 500 });
   assert.equal(net.calls, 0);
-  await assert.rejects(recall(root, 'Aurora', { autoMemory: false, key, request: net.request, dailyTokens: -1 }), /Teto diário inválido/);
+  await assert.rejects(recall(root, 'Aurora', { autoMemory: false, key, request: net.request, dailyTokens: -1 }), /Invalid daily limit/);
 });
 test('abaixo do teto diário recall e findSkill chamam o Jev como antes', async t => {
   const { root } = await fixture(t), net = counting();

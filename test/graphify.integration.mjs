@@ -18,7 +18,7 @@ test('Graphify REAL cria, atualiza, remove nós e preserva índice na falha', { 
   assert.ok(g.nodes.some(n => n.title.includes('refund'))); assert.ok(!g.nodes.some(n => n.title.includes('checkout')));
   const before = await readFile(resolve(root, '.jev-graphify/index.json'), 'utf8');
   await writeFile(resolve(root, 'policy.md'), '# Changed');
-  await assert.rejects(core.update(root, { python: resolve(root, 'missing-python') }), /Graphify falhou/);
+  await assert.rejects(core.update(root, { python: resolve(root, 'missing-python') }), /Graphify failed/);
   assert.equal(await readFile(resolve(root, '.jev-graphify/index.json'), 'utf8'), before);
   await writeFile(resolve(root, '.jev-graphify.json'), JSON.stringify({ ...config, sources: ['policy.md'] }));
   assert.equal((await core.update(root)).nodes, 0);

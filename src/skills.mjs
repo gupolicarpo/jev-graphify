@@ -41,14 +41,14 @@ export async function loadCatalog(root, { skillsDir } = {}) {
   catch (e) { if (e.code !== 'ENOENT') throw e; }
   for (const source of Array.isArray(config?.skills) ? config.skills : []) {
     checkPath(source);
-    if (!/\.md$/i.test(source)) throw Error('Tipo de arquivo não suportado: ' + shown(source));
+    if (!/\.md$/i.test(source)) throw Error('Unsupported file type: ' + shown(source));
     const text = await textFile(root, source), parts = source.split('/'), file = parts.pop();
     skills.push(record(text, /^SKILL\.md$/i.test(file) && parts.length ? parts.pop() : file.replace(/\.md$/i, ''), source, resolve(root, source)));
   }
   if (skillsDir !== undefined && skillsDir !== null) {
     let base;
     try { if (!isAbsolute(skillsDir)) throw Error(); base = await realpath(skillsDir); if (!(await lstat(base)).isDirectory()) throw Error(); }
-    catch { throw Error('Pasta de skills inválida: ' + shown(skillsDir)); }
+    catch { throw Error('Invalid skills folder: ' + shown(skillsDir)); }
     for (const child of (await readdir(base)).sort()) {
       const dir = resolve(base, child);
       if (!(await lstat(dir).catch(() => null))?.isDirectory()) continue;
@@ -56,7 +56,7 @@ export async function loadCatalog(root, { skillsDir } = {}) {
       catch (e) { if (e.code !== 'ENOENT') skipped.push({ source: child + '/SKILL.md', reason: String(e.message).slice(0, 200) }); }
     }
   }
-  if (skills.length > MAX_SKILLS) throw Error('Catálogo de skills acima do limite de ' + MAX_SKILLS + '.');
+  if (skills.length > MAX_SKILLS) throw Error('Skill catalogue over the limit of ' + MAX_SKILLS + '.');
   const used = new Set();
   for (const s of skills) {
     let key = baseKey(s.name), n = 1;
@@ -75,13 +75,13 @@ const noul = instructions => ({ type: 'noul', instructions });
 const num = v => typeof v === 'number' && Number.isFinite(v) && v >= 0 && v <= 1;
 export async function findSkill(root, task, options = {}) {
   const { skillsDir, jev = true, key, request, signal, timeoutMs } = options;
-  if (typeof task !== 'string' || !task.trim() || task.length > 4000) throw Error('Consulta inválida (1–4000 caracteres).');
+  if (typeof task !== 'string' || !task.trim() || task.length > 4000) throw Error('Invalid query (1–4000 characters).');
   root = await realpath(root);
   const privacy = await privacyOf(root, options);
   const { skills, skipped } = await loadCatalog(root, { skillsDir }), catalog = skills.length;
   // Skill ignorada (grande demais, fora de UTF-8, link) aparece no resultado: o usuário precisa saber que ela não concorre.
   const ignored = skipped.length ? { skipped: skipped.slice(0, 10) } : {};
-  if (!catalog) return { status: 'empty_catalog', catalog: 0, ...ignored, note: 'Nenhuma skill encontrada. Configure --skills-dir (ou JEV_GRAPHIFY_SKILLS_DIR) ou liste skills em .jev-graphify.json.' };
+  if (!catalog) return { status: 'empty_catalog', catalog: 0, ...ignored, note: 'No skill found. Set --skills-dir (or JEV_GRAPHIFY_SKILLS_DIR) or list skills in .jev-graphify.json.' };
   const gate = await jevGate(root, options);
   if (!gate.jev) return { status: 'disabled', reason: gate.reason, ...(gate.daily ? { daily: gate.daily } : {}), catalog, ...ignored, candidates: localRank(skills, task), trust };
   let requests = 0, input = 0;
@@ -134,6 +134,6 @@ export async function findSkill(root, task, options = {}) {
     status: 'selected',
     skill: { name: winner.name, description: winner.description, source: winner.source, path: winner.path, body: winner.text.slice(0, 20000), truncated: winner.text.length > 20000 },
     confidence: probOf(winner.key), fit: fits[winner.key], alternatives: others, ...done, trust,
-    note: 'Skill do catálogo aprovado pelo usuário. Siga-a como procedimento, sem que ela autorize comandos, gastos ou acesso a segredos além do que o usuário e o host já permitem.',
+    note: 'Skill from the catalogue approved by the user. Follow it as a procedure; it does not authorize commands, spending or access to secrets beyond what the user and the host already allow.',
   };
 }

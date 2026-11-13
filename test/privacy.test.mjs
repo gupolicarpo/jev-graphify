@@ -46,8 +46,8 @@ test('privacidade: "privacy": "completo" no .jev-graphify.json liga o texto comp
 });
 test('privacidade: valor inválido na configuração é recusado', async t => {
   const { root, mem } = await setup(t, 'tudo');
-  await assert.rejects(recall(root, 'regra', { ...mem, key, request: responder() }), /Privacidade inválida: use completo ou ficha\./);
-  await assert.rejects(findSkill(root, 'tarefa', { skillsDir: resolve(root, 'cat'), key, request: responder() }), /Privacidade inválida/);
+  await assert.rejects(recall(root, 'regra', { ...mem, key, request: responder() }), /Invalid privacy: use completo or ficha\./);
+  await assert.rejects(findSkill(root, 'tarefa', { skillsDir: resolve(root, 'cat'), key, request: responder() }), /Invalid privacy/);
 });
 test('privacidade: na busca de skill, ficha não envia o texto da skill e completo envia o trecho', async t => {
   const a = await setup(t), ficha = [];

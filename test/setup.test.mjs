@@ -9,13 +9,13 @@ test('setup: cria configuração e conexão num projeto novo e não sobrescreve 
   const { root } = await fixture(t);
   await unlink(resolve(root, '.jev-graphify.json'));
   const first = await setup(root, { install: false, index: false });
-  assert.equal(first.status, 'ready'); assert.ok(first.steps.some(s => s.includes('.jev-graphify.json: criado')) && first.steps.some(s => s.includes('.mcp.json: criado')));
+  assert.equal(first.status, 'ready'); assert.ok(first.steps.some(s => s.includes('.jev-graphify.json: created')) && first.steps.some(s => s.includes('.mcp.json: created')));
   assert.deepEqual(await json(resolve(root, '.jev-graphify.json')), { version: 1, sources: [], skills: [], code: { roots: ['.'], exclude: [] } });
   const server = (await json(resolve(root, '.mcp.json'))).mcpServers['jev-graphify'];
   assert.equal(server.command, 'node'); assert.match(server.args[0], /src\/cli\.mjs$/); assert.deepEqual(server.args.slice(1, 3), ['mcp', '--project']); assert.ok(!server.args.join(' ').includes('\\'));
   await writeFile(resolve(root, '.jev-graphify.json'), JSON.stringify({ version: 1, sources: [], skills: [], privacy: 'completo' }));
   const second = await setup(root, { install: false, index: false });
-  assert.ok(second.steps.some(s => s.includes('já existia, mantido') && s.includes('sem "code"')) && second.steps.some(s => s.includes('já estava lá')));
+  assert.ok(second.steps.some(s => s.includes('already existed, kept') && s.includes('no "code" key')) && second.steps.some(s => s.includes('was already there')));
   assert.equal((await json(resolve(root, '.jev-graphify.json'))).privacy, 'completo');
 });
 test('setup: acrescenta o servidor a um .mcp.json que já tem outros e recusa JSON quebrado', async t => {
@@ -25,8 +25,8 @@ test('setup: acrescenta o servidor a um .mcp.json que já tem outros e recusa JS
   const r = await setup(root, { install: false, update: async () => { called++; return { status: 'unchanged' }; } });
   const mcp = await json(resolve(root, '.mcp.json'));
   assert.deepEqual(Object.keys(mcp.mcpServers).sort(), ['jev-graphify', 'outro']); assert.equal(mcp.extra, 1); assert.equal(called, 1);
-  assert.ok(r.steps.some(s => s.includes('acrescentado')) && r.steps.some(s => s.startsWith('índice:')) && r.next.length === 3);
+  assert.ok(r.steps.some(s => s.includes('added to the existing')) && r.steps.some(s => s.startsWith('index:')) && r.next.length === 3);
   await writeFile(resolve(root, '.mcp.json'), '{ quebrado');
-  await assert.rejects(setup(root, { install: false, index: false }), /JSON inválido, não foi alterado/);
+  await assert.rejects(setup(root, { install: false, index: false }), /invalid JSON, left unchanged/);
   assert.equal(await readFile(resolve(root, '.mcp.json'), 'utf8'), '{ quebrado');
 });

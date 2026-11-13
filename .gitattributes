@@ -1,2 +1,2 @@
-# Fim de linha LF em todos os sistemas: o MANIFEST.sha256 confere os bytes dos arquivos.
+# LF line endings on every system: MANIFEST.sha256 checks the file bytes.
 * text=auto eol=lf

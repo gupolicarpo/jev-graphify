@@ -49,7 +49,7 @@ test('catálogo externo: ignora não-pastas e pastas sem SKILL.md, chaves única
 });
 test('catálogo externo: skillsDir inválido é recusado', async t => {
   const { root } = await fixture(t);
-  for (const bad of ['relativo/pasta', resolve(root, 'nao-existe'), resolve(root, 'policy.md')]) await assert.rejects(loadCatalog(root, { skillsDir: bad }), /Pasta de skills inválida/);
+  for (const bad of ['relativo/pasta', resolve(root, 'nao-existe'), resolve(root, 'policy.md')]) await assert.rejects(loadCatalog(root, { skillsDir: bad }), /Invalid skills folder/);
 });
 test('catálogo externo: SKILL.md grande ou não UTF-8 é registrado como ignorado', async t => {
   const { root } = await fixture(t); await bare(root);
@@ -77,13 +77,13 @@ test('skills do projeto e externas são combinadas; nome e descrição de reserv
 test('limite de 1020 skills', async t => {
   const { root } = await fixture(t), many = {};
   for (let i = 0; i < 1021; i++) many['s' + i] = 'x';
-  await assert.rejects(loadCatalog(root, { skillsDir: await external(root, many) }), /acima do limite de 1020/);
+  await assert.rejects(loadCatalog(root, { skillsDir: await external(root, many) }), /over the limit of 1020/);
 });
 test('catálogo vazio e consulta inválida', async t => {
   const { root } = await fixture(t);
   await writeFile(resolve(root, '.jev-graphify.json'), JSON.stringify({ version: 1, sources: [], skills: [] }));
   assert.equal((await findSkill(root, 'algo', { key })).status, 'empty_catalog');
-  for (const bad of ['', '   ', 'x'.repeat(4001), 5]) await assert.rejects(findSkill(root, bad), /Consulta inválida/);
+  for (const bad of ['', '   ', 'x'.repeat(4001), 5]) await assert.rejects(findSkill(root, bad), /Invalid query/);
 });
 test('sem chave ou com Jev desligado: candidatas locais e nenhuma requisição', async t => {
   const { root } = await fixture(t), dir = await external(root, six); let calls = 0; const request = async () => { calls++; };

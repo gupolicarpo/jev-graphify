@@ -31,11 +31,11 @@ export async function generateGraph(root, records, { python = defaultPython() } 
     try { await exec(python, ['-I', bridge, stage], { cwd: stage, env, timeout: 60000, maxBuffer: 1048576, windowsHide: true }); }
     catch (e) {
       // O ambiente do subprocesso não tem chaves; mostrar só o fim do erro, para diagnóstico.
-      const detail = e.code === 'ENOENT' ? 'Python não encontrado: ' + python : e.killed ? 'tempo esgotado (60 s)' : String(e.stderr || e.message || '').trim().split(/\r?\n/).slice(-3).join(' | ').slice(-400);
-      throw Error('Graphify falhou. Confira Python e graphifyy==0.9.107 no ambiente local. O índice anterior foi preservado. Detalhe: ' + detail);
+      const detail = e.code === 'ENOENT' ? 'Python not found: ' + python : e.killed ? 'timed out (60 s)' : String(e.stderr || e.message || '').trim().split(/\r?\n/).slice(-3).join(' | ').slice(-400);
+      throw Error('Graphify failed. Check Python and graphifyy==0.9.107 in the local environment. The previous index was kept. Detail: ' + detail);
     }
     const graph = JSON.parse(await textFile(stage, 'graphify-out/graph.json', true, 8388608));
-    if (!Array.isArray(graph.nodes) || !Array.isArray(graph.links ?? graph.edges) || graph.nodes.length > 20000 || (graph.links ?? graph.edges).length > 80000) throw Error('Grafo inválido ou acima do limite.');
+    if (!Array.isArray(graph.nodes) || !Array.isArray(graph.links ?? graph.edges) || graph.nodes.length > 20000 || (graph.links ?? graph.edges).length > 80000) throw Error('Invalid graph or over the limit.');
     const sources = new Set(records.map(r => r.source));
     const normalize = source => {
       if (typeof source !== 'string') return null;
@@ -50,7 +50,7 @@ export async function generateGraph(root, records, { python = defaultPython() } 
     return { generator: 'graphifyy', version: '0.9.107', mode: 'code-only/no-cluster', directed: graph.directed !== false, nodes, edges };
   } finally {
     const target = await realpath(stage), rel = relative(await realpath(parent), target);
-    if (!rel || rel.startsWith('..') || isAbsolute(rel)) throw Error('Pasta temporária fora do escopo.');
+    if (!rel || rel.startsWith('..') || isAbsolute(rel)) throw Error('Temporary folder outside the allowed scope.');
     await rm(target, { recursive: true, force: true });
   }
 }
