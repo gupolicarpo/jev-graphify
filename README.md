@@ -6,11 +6,11 @@ An MCP server for Claude Code, Codex and other agent hosts. [Graphify](https://p
 
 Independent community package. Not an official product of Anthropic, OpenAI, Graphify or TypeSafe.
 
-> Documentation in Portuguese (the original, more detailed): [README.pt-BR.md](README.pt-BR.md) · [measurements and limits](docs/COMPATIBILIDADE.md) · [API](docs/API.md)
+> More: [measurements and limits](docs/COMPATIBILITY.md) · [API notes](docs/API.md) · [Português](README.pt-BR.md)
 
 ## What was measured
 
-All numbers come from the real Jev service. They are single runs on small test sets written by the author, so read them as evidence that the pipeline works, not as a benchmark. Details and limits are in [docs/COMPATIBILIDADE.md](docs/COMPATIBILIDADE.md).
+All numbers come from the real Jev service. They are single runs on small test sets written by the author, so read them as evidence that the pipeline works, not as a benchmark. Details and limits are in [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md).
 
 | Task | Result | Cost per query |
 |---|---|---|
@@ -134,7 +134,6 @@ node /path/to/jev-graphify/src/cli.mjs find --project /path/to/your-project --in
 - With the default card-only privacy mode, recall can miss a detail that appears only in the middle of a note.
 - The relevance thresholds were tuned on small test sets.
 - Codex memories and session transcripts are not read.
-- Tool descriptions, messages and the agent skill are in English. The detailed measurement notes and the API notes are still in Portuguese.
 
 ## License
 

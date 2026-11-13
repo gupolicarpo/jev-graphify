@@ -108,7 +108,7 @@ Depois de conectar, peça: “Use a memória deste projeto para corrigir o arred
 
 O Jev é o seletor do plugin e é usado sempre que a variável `JEV_API_KEY` existe no ambiente do processo que inicia o servidor. O uso gera cobrança pelo provedor (TypeSafe). A chave é lida somente de `JEV_API_KEY`. Use o gerenciador de segredos ou ambiente local do seu sistema, sem colocá-la em arquivos do plugin, comandos, pedidos JSON ou logs.
 
-Para desligar mesmo com a chave presente, acrescente `--no-jev` aos argumentos de inicialização do MCP/CLI; o iniciador de plugin `src/plugin.mjs` aceita a mesma opção. `--allow-paid-jev`, das versões 0.1.x, continua aceito e não faz mais nada. No Codex, acrescente `JEV_API_KEY` à lista `env_vars`. **Mudança em relação à 0.1.x: ter a chave no ambiente agora ativa as chamadas.** Os testes automáticos usam um Jev simulado; a busca de skill foi conferida uma vez com o serviço real (veja `docs/COMPATIBILIDADE.md`). `route` e `recover` não foram exercitados com o serviço real.
+Para desligar mesmo com a chave presente, acrescente `--no-jev` aos argumentos de inicialização do MCP/CLI; o iniciador de plugin `src/plugin.mjs` aceita a mesma opção. `--allow-paid-jev`, das versões 0.1.x, continua aceito e não faz mais nada. No Codex, acrescente `JEV_API_KEY` à lista `env_vars`. **Mudança em relação à 0.1.x: ter a chave no ambiente agora ativa as chamadas.** Os testes automáticos usam um Jev simulado; a busca de skill foi conferida uma vez com o serviço real (veja `docs/pt-BR/COMPATIBILIDADE.md`). `route` e `recover` não foram exercitados com o serviço real.
 
 Uma chamada `route` pode fazer até duas requisições; uma recuperação, uma; uma busca de skill, duas (mais uma a cada 255 skills do catálogo). Quando o serviço responde 429 ou 529, há até duas novas tentativas, com espera curta. O prazo é de cinco segundos por requisição e a confiança mínima é 0,5; esse valor é apenas um limiar operacional, não uma garantia de acerto. Em falha de rede, baixa confiança ou escolha de nenhuma candidata, o resultado fica pendente para o agente.
 
@@ -182,7 +182,7 @@ Os arquivos são copiados para uma área temporária dentro de `.jev-graphify`, 
 
 **Privacidade.** Para o Jev vão a pergunta, os caminhos dos arquivos e os nomes de classes e métodos. O texto do código não é enviado. Sem chave ou com `--no-jev`, a ordenação é local, por palavras, e funciona mal quando a pergunta está numa língua e o código em outra.
 
-Num projeto real de cerca de 2.000 arquivos em C#, com 24 perguntas em português, o arquivo certo ficou entre os 3 primeiros em 22 e entre os 5 primeiros em 23, por cerca de 65 mil tokens do Jev por pergunta (menos de um terço de centavo de dólar) e com o índice pronto em menos de 3 minutos; os detalhes e os limites dessa medição estão em `docs/COMPATIBILIDADE.md`. Teste pelo CLI:
+Num projeto real de cerca de 2.000 arquivos em C#, com 24 perguntas em português, o arquivo certo ficou entre os 3 primeiros em 22 e entre os 5 primeiros em 23, por cerca de 65 mil tokens do Jev por pergunta (menos de um terço de centavo de dólar) e com o índice pronto em menos de 3 minutos; os detalhes e os limites dessa medição estão em `docs/pt-BR/COMPATIBILIDADE.md`. Teste pelo CLI:
 
 ```powershell
 node src/cli.mjs find --project "C:/CAMINHO/meu-projeto" --input examples/find.json
@@ -228,4 +228,4 @@ Para persistir um aprendizado, revise a evidência com o usuário, atualize o do
 - O processo MCP herda as permissões de quem o iniciou. Ele não é um isolamento de sistema operacional e não recebe automaticamente todas as regras internas de permissão do host. Autorize o diretório explicitamente e use as permissões/sandbox do host. Não execute em pastas controladas por terceiros que possam trocar arquivos/links durante a leitura.
 - Inclua `.jev-graphify/` no `.gitignore` do projeto: ali há cópias das fontes autorizadas. Não envie essa pasta à comunidade. O pacote distribuído não inclui índices, ambientes, históricos ou chaves.
 
-Consulte `docs/COMPATIBILIDADE.md` para o que foi testado, `docs/API.md` para integrar o núcleo e `THIRD_PARTY_NOTICES.md` para origem e licenças.
+Consulte `docs/pt-BR/COMPATIBILIDADE.md` para o que foi testado, `docs/pt-BR/API.md` para integrar o núcleo e `THIRD_PARTY_NOTICES.md` para origem e licenças.
