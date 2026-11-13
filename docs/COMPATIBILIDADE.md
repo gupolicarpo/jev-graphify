@@ -1,4 +1,4 @@
-# Compatibilidade verificada — 0.5.0 (histórico desde a 0.1.1)
+# Compatibilidade verificada — 0.5.1 (histórico desde a 0.1.1)
 
 Data: 12/11/2026. Ambiente: Windows x64, Node.js 24.19.0, npm 11.17.0, CPython 3.13.15. Todos os dados usados foram fictícios. Nenhuma chamada real paga a Jev ou LLM foi feita.
 
@@ -99,3 +99,10 @@ Os logs de trabalho com caminhos locais ficam fora do ZIP. O resumo distribuído
 - **Outros sistemas.** O ambiente reduzido em que o Graphify roda agora também isola a pasta pessoal fora do Windows (`HOME` e pastas XDG apontam para a área temporária) e repassa `TMPDIR` e o idioma do sistema. Verificado em Linux (Ubuntu 24.04 sob WSL2, Node 22.22, Python 3.12.3): 117 testes, 2 testes com o Graphify real e a demonstração, sem nada gravado na pasta pessoal. **macOS não foi verificado numa máquina de verdade**; o repositório traz um teste automático para Windows, macOS e Linux, que roda no GitHub a cada envio.
 - A documentação deixou de citar nomes de arquivos e perguntas do projeto privado usado nas medições.
 - 117 testes automáticos.
+
+## Mudanças na 0.5.1
+
+- **Comando `setup`.** Um comando prepara tudo: dependências do Node, ambiente do Graphify, `.jev-graphify.json` e `.mcp.json` no projeto e o índice do código. Não sobrescreve arquivos existentes; num `.mcp.json` que já tem outros servidores, só acrescenta o dele.
+- README principal em inglês; o texto em português fica em `README.pt-BR.md`.
+- O primeiro envio ao GitHub rodou o teste automático com sucesso em Windows, macOS e Linux (Node 22, Python 3.13), incluindo o Graphify real e a demonstração: o macOS passa a contar como verificado.
+- 119 testes automáticos.

@@ -51,6 +51,7 @@
   "src/memory.mjs",
   "src/plugin.mjs",
   "src/project.mjs",
+  "src/setup.mjs",
   "src/skills.mjs",
   "test/budget.test.mjs",
   "test/core.test.mjs",
@@ -61,5 +62,6 @@
   "test/memory.test.mjs",
   "test/privacy.test.mjs",
   "test/project.test.mjs",
+  "test/setup.test.mjs",
   "test/skills.test.mjs"
 ]

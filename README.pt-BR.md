@@ -1,10 +1,21 @@
-# Jev + Graphify — 0.5.0
+# Jev + Graphify — 0.5.1
 
 Memória persistente por projeto para ajudar o agente a encontrar regras, escolher procedimentos e retomar uma tarefa depois de um teste falhar. Pacote comunitário independente; não é um produto oficial de OpenAI, Anthropic, Graphify ou TypeSafe.
 
 O Graphify gera um grafo real do código local. O plugin guarda esse grafo junto das referências em `.jev-graphify/index.json`. Documentos Markdown/texto entram numa busca textual, que aceita variações da mesma palavra (por exemplo, "arredondar" encontra "arredondamento"); **esta versão não faz extração semântica por LLM de documentos**. Com a chave do Jev no ambiente, o Jev escolhe a skill e a referência, e também acha a skill certa num catálogo de skills desligadas (veja "Skills sob demanda"). Sem a chave, a busca local funciona e o agente pode analisar as candidatas.
 
 Nada é instalado globalmente, publicado ou ligado a um serviço pago pelo instalador abaixo.
+
+## Começo rápido
+
+Três passos: baixar, rodar um comando e configurar a chave.
+
+```bash
+git clone https://github.com/gupolicarpo/jev-graphify.git
+node jev-graphify/src/cli.mjs setup --project /caminho/do/seu-projeto
+```
+
+O `setup` instala as dependências do Node, cria o ambiente Python do Graphify, grava `.jev-graphify.json` e `.mcp.json` no seu projeto (nunca sobrescreve o que já existe; num `.mcp.json` existente ele só acrescenta o servidor) e gera o índice do código. Depois, ponha a chave em `JEV_API_KEY` no ambiente do programa que abre o agente e abra o agente na pasta do projeto. O restante desta página é o mesmo caminho feito à mão, com as opções.
 
 ## Começar no Windows
 

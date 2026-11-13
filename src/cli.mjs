@@ -26,9 +26,10 @@ export function parseArgs(argv) {
   return { command, project, input, skillsDir, noJev, memoryDirs, autoMemory, privacy, allTools, dailyTokens, full };
 }
 async function main() {
-  if (process.argv[2] === '--help') { console.log('node src/cli.mjs <init|status|update|search|read|route|recover|skill|recall|find|mcp> --project <pasta> [--input <pedido.json>] [--skills-dir <pasta>] [--memory-dir <pasta>]... [--no-auto-memory] [--privacy <completo|ficha>] [--no-jev] [--jev-daily-tokens <n>] [--all-tools] [--full]'); return; }
+  if (process.argv[2] === '--help') { console.log('node src/cli.mjs <setup|init|status|update|search|read|route|recover|skill|recall|find|mcp> --project <pasta> [--input <pedido.json>] [--skills-dir <pasta>] [--memory-dir <pasta>]... [--no-auto-memory] [--privacy <completo|ficha>] [--no-jev] [--jev-daily-tokens <n>] [--all-tools] [--full]'); return; }
   const { command, project, input, skillsDir, noJev, memoryDirs, autoMemory, privacy, allTools, dailyTokens, full } = parseArgs(process.argv.slice(2));
   const options = { jev: !noJev, key: process.env.JEV_API_KEY, skillsDir, memoryDirs, autoMemory, ...(privacy ? { privacy } : {}), ...(allTools ? { allTools } : {}), ...(dailyTokens !== undefined ? { dailyTokens } : {}) };
+  if (command === 'setup') { const { setup } = await import('./setup.mjs'); console.log(JSON.stringify(await setup(project, { update: p => core.update(p) }), null, 2)); return; }
   if (command === 'mcp') { const { start } = await import('./mcp.mjs'); start(project, options); return; }
   let data = {};
   if (input) { const raw = await readFile(input); if (raw.length > 32768) throw Error('Pedido grande demais.'); data = JSON.parse(raw.toString('utf8')); }

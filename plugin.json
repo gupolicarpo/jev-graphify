@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "jev-graphify",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Memória local por projeto com Graphify e seleção opcional pelo Jev.",
   "license": "MIT",
   "author": {

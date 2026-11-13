@@ -40,7 +40,20 @@ Four older tools (`memory_search`, `memory_read`, `jev_route`, `memory_recover`)
 
 Tested on Windows, macOS and Linux (see the Actions tab).
 
-## Install
+## Quick start
+
+Three steps: get the code, run one command, set your key.
+
+```bash
+git clone https://github.com/gupolicarpo/jev-graphify.git
+node jev-graphify/src/cli.mjs setup --project /path/to/your-project
+```
+
+`setup` installs the Node dependencies, creates the Python environment for Graphify, writes `.jev-graphify.json` and `.mcp.json` into your project (it never overwrites what is already there; it adds the server to an existing `.mcp.json`), and builds the code index. Then put your key in the `JEV_API_KEY` environment variable of the program that starts your agent, and open the agent in the project folder.
+
+The rest of this page is the same thing done by hand, plus the options.
+
+## Install by hand
 
 Windows (PowerShell):
 

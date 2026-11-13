@@ -1,6 +1,6 @@
 {
   "date": "2026-11-13",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "environment": {
     "os": "Windows x64",
     "node": "24.19.0",
@@ -9,7 +9,7 @@
     "graphifyy": "0.9.107",
     "mcpSdk": "2.4.0"
   },
-  "unitAndMcpTests": 117,
+  "unitAndMcpTests": 119,
   "realGraphifyIntegrationTests": 2,
   "demo": "real failing/passing Python test; real Graphify; simulated Jev, review and executor",
   "cleanInstallFromZip": "not repeated for 0.5.0 (last repeated on 0.4.0: npm ci and unit/MCP tests)",
@@ -33,5 +33,5 @@
     "realGraphifyIntegrationTests": "2/2",
     "demo": "passed"
   },
-  "macosCheck": "not executed on a real machine; CI workflow provided, not yet run"
+  "macosCheck": "passed on GitHub Actions (macos-latest, Node 22, Python 3.13): unit/MCP tests, real Graphify tests and demo"
 }
