@@ -1,4 +1,4 @@
-# Jev + Graphify — 0.5.2
+# Jev + Graphify — 0.6.0
 
 Memória persistente por projeto para ajudar o agente a encontrar regras, escolher procedimentos e retomar uma tarefa depois de um teste falhar. Pacote comunitário independente; não é um produto oficial de OpenAI, Anthropic, Graphify ou TypeSafe.
 
@@ -122,7 +122,7 @@ Como o Jev fica ligado sempre que há chave, cada projeto tem um teto diário de
 
 ### Ferramentas ligadas
 
-Cada ferramenta registrada ocupa contexto em toda sessão do agente. Por isso só cinco ficam ligadas por padrão: `memory_status`, `memory_update`, `memory_recall`, `project_find` e `skill_find` (cerca de 540 tokens por sessão). As quatro do fluxo antigo (`memory_search`, `memory_read`, `jev_route` e `memory_recover`) só aparecem com `--all-tools` nos argumentos de inicialização ou `JEV_GRAPHIFY_ALL_TOOLS=1` (cerca de 1.190 tokens com as nove).
+Cada ferramenta registrada ocupa contexto em toda sessão do agente. Por isso só cinco ficam ligadas por padrão: `memory_status`, `memory_update`, `memory_recall`, `project_find` e `skill_find` (cerca de 540 tokens por sessão); uma sexta, `note_capture`, só aparece se você configurar uma pasta de entrada do Second Brain. As quatro do fluxo antigo (`memory_search`, `memory_read`, `jev_route` e `memory_recover`) só aparecem com `--all-tools` nos argumentos de inicialização ou `JEV_GRAPHIFY_ALL_TOOLS=1` (cerca de 1.190 tokens com as nove).
 
 ## Lembrar com teto de tokens
 
@@ -188,6 +188,60 @@ Num projeto real de cerca de 2.000 arquivos em C#, com 24 perguntas em portuguê
 node src/cli.mjs find --project "C:/CAMINHO/meu-projeto" --input examples/find.json
 ```
 
+## Second Brain (notas em Markdown)
+
+Um Second Brain aqui é uma pasta de notas em Markdown com `[[wikilinks]]`, do tipo que Obsidian, Foam, SilverBullet ou Logseq mantêm. O plugin a lê para que uma única pergunta ao agente devolva as notas certas e os arquivos de código de que essas notas tratam.
+
+Ligue no `.jev-graphify.json`:
+
+```json
+{
+  "version": 1,
+  "sources": [],
+  "skills": [],
+  "code": { "roots": ["."], "exclude": [] },
+  "brain": {
+    "roots": ["notes"],
+    "exclude": ["Templates", "Archive/2019"],
+    "private_tags": ["private"],
+    "inbox": "Inbox/agent"
+  }
+}
+```
+
+`roots` são pastas dentro do projeto (mesmas regras de `code.roots`). `exclude`, `private_tags` e `inbox` são opcionais. Para um cofre fora do projeto, acrescente `--brain-dir C:/caminho` (pode repetir) aos argumentos de inicialização ou, no carregamento por plugin, defina `JEV_GRAPHIFY_BRAIN_DIRS` (caminhos absolutos separados por `;` no Windows e `:` nos outros sistemas). Só quem inicia o servidor define isso; o modelo não. Depois rode `update`, que agrupa as notas e as liga ao índice de código.
+
+O que o agente recebe:
+
+- `memory_recall` devolve notas junto das memórias e dos trechos do projeto. Cada nota traz em `code` os arquivos de código a que está ligada (até 4, com os símbolos), e a resposta tem uma lista `code` no topo com os arquivos para abrir (até 8).
+- `project_find` acrescenta `notes` (até 3) a cada arquivo a que notas se ligam. Isso vem do índice, sem chamada ao Jev.
+- `note_capture` só existe quando `brain.inbox` está definido. Grava uma nota nova, com título, tags, links e caminhos de código, na pasta de entrada do primeiro cofre. Nunca sobrescreve nem edita nada.
+
+Como uma nota é ligada ao código, da ligação mais forte para a mais fraca: uma lista `code:` no cabeçalho, um link para um arquivo de código, um nome ou caminho de arquivo de código escrito no texto, e um nome de função ou classe entre crases que existe em poucos arquivos do índice de código. As ligações com código dependem do índice de código (`code` no `.jev-graphify.json`).
+
+Decisões substituídas: quando uma nota diz `superseded_by` (ou outra diz `supersedes`), a decisão atual é posta logo antes da antiga, e é trazida para o resultado se não estava nele. A nota antiga traz `superseded_by`, para o agente ver por que está desatualizada.
+
+Como o cofre é agrupado: o Graphify agrupa as notas e os arquivos de código ligados a elas num só grafo (Leiden, o mesmo método usado no código), então notas do mesmo assunto caem na mesma comunidade mesmo sem links entre elas. Se o Graphify não puder rodar, as notas são agrupadas pela pasta de topo e o resultado do `update` diz isso. Num cofre com mais de 150 notas e pelo menos 6 comunidades, o Jev primeiro escolhe as 6 melhores comunidades por fichas curtas; as 20 notas que melhor casam com a pergunta por palavras passam de qualquer forma, como rede de segurança.
+
+Privacidade:
+
+- Uma nota com `private: true` no cabeçalho, ou com uma tag listada em `private_tags`, nunca entra no índice, nos resultados, nas fichas enviadas ao Jev nem nas listas de links de outras notas. Ela só é contada.
+- Padrão (`ficha`): para a TypeSafe vai uma ficha por nota (título, apelidos, descrição curta, tipo, status, tags, títulos das seções, títulos de até 6 notas ligadas e até 4 caminhos de código ligados) e, em cofres grandes, uma ficha por comunidade. O texto das notas não vai.
+- Com `"privacy": "completo"`, vai também o texto das notas mais bem colocadas. Como nas memórias, trechos com cara de segredo são trocados antes do envio e cada requisição é registrada sem conteúdo.
+- O texto de nota devolvido ao agente é dado não confiável. Sem chave ou com `--no-jev`, nada é enviado.
+
+Medição num cofre fictício (218 notas, das quais 3 privadas e 3 modelos excluídos, ficando 212 indexadas; 36 arquivos de código Python; 40 perguntas em português; teto de 1.500 tokens; execuções únicas em 19/11/2026). "Linha de base" é o plugin 0.5.2 com as mesmas notas copiadas para uma pasta de memória plana. Dos 40 casos, 34 têm resposta no cofre e 6 não têm; 32 têm código ligado.
+
+| Modo | 1º lugar (34) | Na resposta (34) | Sem resposta certos (6) | Código certo (32) | Arquivo no top 5 do `project_find` (32) | Tokens devolvidos (média) | Tokens Jev por consulta | Custo por consulta | Latência |
+|---|---|---|---|---|---|---|---|---|---|
+| Linha de base, sem chave | 13 | 32 | 0 | — | — | 1.473 | 0 | 0 | 0,53 s |
+| Linha de base, Jev (fichas) | 22 | 31 | 6 | — | — | 399 | cerca de 28.200 | cerca de US$ 0,0012 | 3,5 s |
+| 0.6.0, sem chave | 20 | 30 | 0 | 31 | 17 | 1.470 | 0 | 0 | 0,60 s |
+| 0.6.0, Jev, `ficha` (padrão) | 26 | 31 | 5 | 30 | 31 | 555 | cerca de 24.300 | cerca de US$ 0,0010 | 1,35 s |
+| 0.6.0, Jev, `completo` | 29 | 33 | 6 | 31 | 32 | 570 | cerca de 27.500 | cerca de US$ 0,0012 | 1,6 s |
+
+Na linha de base o 0.5.2 não devolve código a partir de notas, por isso as colunas de código ficam vazias. Marcador de nota privada vazado: 0 em todos os modos. Os dados, o executor e os resultados completos estão em `bench/second-brain/` (no repositório, fora do ZIP de distribuição). Os modos com Jev enviam esse cofre fictício à TypeSafe. Ressalvas: notas e perguntas sintéticas escritas pelo mesmo autor de IA (viés otimista), conjunto pequeno, execução única, e o modo local sempre enche o teto, então nunca responde "nada encontrado". Detalhes em `docs/pt-BR/COMPATIBILIDADE.md`.
+
 ## Skills sob demanda
 
 Skills ligadas no host custam tokens em toda conversa, porque a descrição de cada uma fica no contexto. Aqui a ideia é o contrário: você guarda as skills **desligadas** numa pasta sua, e a ferramenta `skill_find` entrega o texto da skill certa só quando uma tarefa precisa dela.
@@ -220,12 +274,13 @@ Para persistir um aprendizado, revise a evidência com o usuário, atualize o do
 ## Limites e problemas comuns
 
 - Até 100 arquivos explícitos, 128 KiB por arquivo e 2 MiB no total. Até 12 skills na seleção Jev, 12 referências na pré-busca, seis na recuperação. Texto retornado por fonte limitado a 6.000 caracteres; `truncated` sinaliza cortes.
-- Graphify limitado a 20 mil nós/80 mil relações; grafo bruto até 8 MiB. Código usa AST local, sem agrupamento de comunidades; PDF, vídeo, SQL e extração semântica não estão integrados nesta versão. Extensões aceitas estão em `src/graphify.mjs`.
+- Graphify limitado a 20 mil nós/80 mil relações; grafo bruto até 8 MiB. Código usa AST local; o índice do projeto e o Second Brain usam o agrupamento de comunidades do Graphify (Leiden); PDF, vídeo, SQL e extração semântica não estão integrados nesta versão. Extensões aceitas estão em `src/graphify.mjs`.
 - Atualização reconstitui o grafo a partir das fontes autorizadas. Se nada mudou, não roda Graphify. Se falhar, preserva o índice anterior e mantém as consultas bloqueadas até atualizar.
 - `Graphify falhou`: a mensagem traz o final do erro real (por exemplo, Python não encontrado ou `graphifyy` ausente). Confira o executável em `JEV_GRAPHIFY_PYTHON` e a instalação de `graphifyy==0.9.107`. Outra versão é recusada para evitar mudanças de contrato silenciosas.
 - `Atualização em andamento`: espere a outra atualização. Se um processo caiu no meio, a trava `.jev-graphify/update.lock` é assumida sozinha: na hora, quando o processo que a criou nesta máquina já terminou, ou depois de 3 minutos. Não remova uma trava enquanto houver atualização ativa.
 - Índice copiado/corrompido: com o servidor parado, remova apenas `.jev-graphify/index.json` do projeto correto e execute `update`. O índice é reconstruível a partir das fontes; não apague as fontes.
 - O processo MCP herda as permissões de quem o iniciou. Ele não é um isolamento de sistema operacional e não recebe automaticamente todas as regras internas de permissão do host. Autorize o diretório explicitamente e use as permissões/sandbox do host. Não execute em pastas controladas por terceiros que possam trocar arquivos/links durante a leitura.
+- Second Brain: só notas em Markdown são lidas (até 10.000 notas, 64 MiB no total, 256 KiB por nota; notas maiores são puladas). Uma nota só é ligada ao código por nomes de arquivo, caminhos e símbolos que aparecem nela; uma nota que descreve o código com outras palavras não é ligada. Sem chave, a ordenação local sempre enche o teto e nunca responde "nada encontrado". As medições usam notas e perguntas sintéticas e podem exagerar os resultados num cofre real.
 - Inclua `.jev-graphify/` no `.gitignore` do projeto: ali há cópias das fontes autorizadas. Não envie essa pasta à comunidade. O pacote distribuído não inclui índices, ambientes, históricos ou chaves.
 
 Consulte `docs/pt-BR/COMPATIBILIDADE.md` para o que foi testado, `docs/pt-BR/API.md` para integrar o núcleo e `THIRD_PARTY_NOTICES.md` para origem e licenças.

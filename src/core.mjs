@@ -42,10 +42,10 @@ async function readIndex(root, required = true) {
     return data;
   } catch (e) { if (e.code === 'ENOENT' && !required) return null; throw e; }
 }
-export async function status(root) {
+export async function status(root, options = {}) {
   const inv = await inventory(root), index = await readIndex(root, false);
-  const { projectStatus } = await import('./project.mjs');
-  return { status: !index ? 'missing' : inv.revision !== index.revision ? 'stale' : JSON.stringify(inv.records) !== JSON.stringify(index.records) ? 'invalid' : 'current', revision: index?.revision ?? null, generatedAt: index?.generatedAt ?? null, sources: inv.records.length, graph: index ? { generator: index.graph.generator, version: index.graph.version, nodes: index.graph.nodes.length, edges: index.graph.edges.length } : null, project: await projectStatus(root) };
+  const { projectStatus } = await import('./project.mjs'), { brainStatus } = await import('./brain.mjs');
+  return { status: !index ? 'missing' : inv.revision !== index.revision ? 'stale' : JSON.stringify(inv.records) !== JSON.stringify(index.records) ? 'invalid' : 'current', revision: index?.revision ?? null, generatedAt: index?.generatedAt ?? null, sources: inv.records.length, graph: index ? { generator: index.graph.generator, version: index.graph.version, nodes: index.graph.nodes.length, edges: index.graph.edges.length } : null, project: await projectStatus(root), brain: await brainStatus(root, options) };
 }
 async function rebuild(root, inv, options) {
   // Sem fonte de código não há o que extrair: não chama o Graphify à toa (config só com `code`).
@@ -76,8 +76,8 @@ export async function update(root, options = {}) {
   try {
     const inv = await inventory(root), old = await readIndex(root, false);
     const result = old?.revision === inv.revision && JSON.stringify(old.records) === JSON.stringify(inv.records) ? { status: 'unchanged', revision: inv.revision } : await rebuild(root, inv, options);
-    const project = await updateProject(root, options);
-    return project ? { ...result, project } : result;
+    const project = await updateProject(root, options), { updateBrain } = await import('./brain.mjs'), brain = await updateBrain(root, options);
+    return project || brain ? { ...result, ...(project ? { project } : {}), ...(brain ? { brain } : {}) } : result;
   } finally { await fd.close(); await unlink(lock).catch(() => {}); }
 }
 // Uma atualização dura no máximo ~60 s (limite do Graphify). Trava mais velha que lockMaxAge, ou de um

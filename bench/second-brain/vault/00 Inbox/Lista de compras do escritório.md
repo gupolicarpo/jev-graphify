@@ -1,0 +1,4 @@
+- café (o bom)
+- copos
+- adaptador de tomada
+- caneta quadro branco azul

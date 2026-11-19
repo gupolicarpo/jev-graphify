@@ -1,16 +1,17 @@
 {
-  "date": "2026-11-13",
-  "version": "0.5.2",
+  "date": "2026-11-19",
+  "version": "0.6.0",
   "environment": {
     "os": "Windows x64",
-    "node": "24.19.0",
+    "node": "24.22.3",
     "npm": "11.17.0",
     "python": "3.13.15",
     "graphifyy": "0.9.107",
     "mcpSdk": "2.4.0"
   },
-  "unitAndMcpTests": 119,
-  "realGraphifyIntegrationTests": 2,
+  "unitAndMcpTests": 138,
+  "realGraphifyIntegrationTests": 3,
+  "secondBrainMeasurement": "2026-11-19, real Jev service, fictional vault in bench/second-brain (212 indexed notes, 40 questions), modes local/ficha/completo plus 0.5.2 baseline; see docs/COMPATIBILITY.md",
   "demo": "real failing/passing Python test; real Graphify; simulated Jev, review and executor",
   "cleanInstallFromZip": "not repeated for 0.5.0 (last repeated on 0.4.0: npm ci and unit/MCP tests)",
   "realJevCalls": "yes, with the published service on 2026-11-12: skill selection, memory recall and project search (see docs/COMPATIBILIDADE.md for data, counts and limits); jev_route and memory_recover not exercised against the real service",

@@ -1,0 +1,1 @@
+Revisitei o capítulo sobre revolução agrícola: argumento de que o trigo domesticou os humanos. Gostei. A parte sobre "ordens imaginadas" (dinheiro, empresas, direitos) é a que mais volta à minha cabeça.

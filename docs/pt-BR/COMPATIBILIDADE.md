@@ -1,4 +1,4 @@
-# Compatibilidade verificada — 0.5.2 (histórico desde a 0.1.1)
+# Compatibilidade verificada — 0.6.0 (histórico desde a 0.1.1)
 
 Data: 12/11/2026. Ambiente: Windows x64, Node.js 24.19.0, npm 11.17.0, CPython 3.13.15. Todos os dados usados foram fictícios. Nenhuma chamada real paga a Jev ou LLM foi feita.
 
@@ -112,3 +112,35 @@ Os logs de trabalho com caminhos locais ficam fora do ZIP. O resumo distribuído
 - **Textos em inglês.** As descrições das ferramentas, as mensagens (erros, `setup`, notas dos resultados), a skill do plugin e os rótulos das fichas enviadas ao Jev passaram para o inglês. Nomes de campos, opções e valores do formato de dados não mudaram (`nucleos`, `modulos`, `completo`, `ficha` etc.).
 - Como os rótulos das fichas mudaram, as 24 perguntas de referência foram repetidas no projeto real com o Jev real (13/11/2026): 18 em 1º lugar, 22 entre os 3 e 24 entre os 5, com cerca de 63 mil tokens por pergunta, sem piora.
 - Instalação do zero pelo `setup` verificada em Windows (88 s) e Linux; e, no Windows, o caminho completo até a busca pelo servidor MCP com o Jev real num projeto de 27 arquivos: arquivo certo em 1º lugar em 5 de 6 perguntas e entre os 3 em 6 de 6.
+
+## Mudanças na 0.6.0
+
+- **Second Brain.** `memory_recall` e `project_find` passam a ler um cofre de notas em Markdown (estilo Obsidian, Foam, SilverBullet, Logseq) e devolvem as notas junto dos arquivos de código a que elas se ligam. O Graphify agrupa as notas e o código ligado em comunidades; o Jev escolhe. A ferramenta opcional `note_capture` só existe com `brain.inbox`. Nada muda para projetos sem a chave `brain`. Privacidade: notas privadas nunca saem da máquina; por padrão só fichas vão ao Jev, e o texto das notas só vai com `"privacy": "completo"`.
+- 138 testes automáticos, 0 falhas, sem chave.
+
+### Medição
+
+Conjunto em [bench/second-brain](../../bench/second-brain), fictício e sintético: um cofre de 218 notas (3 privadas e 3 modelos excluídos, ficando 212 indexadas) e um projeto Python de faturamento com 36 arquivos de código (47 com `__init__`). 40 perguntas em português: 14 paráfrases, 6 diretas, 6 sobre decisão substituída, 6 em que o código está a dois links de distância, 6 sem resposta no cofre e 2 pessoais. 60 notas ligam a código; o Graphify agrupou o cofre e o código ligado em 13 comunidades. O teto foi de 1.500 tokens e o preço do Jev, US$ 0,042 por milhão de tokens de entrada. Execuções únicas em 19/11/2026 com o Jev real. "Linha de base" é o plugin 0.5.2 com as mesmas notas copiadas para uma pasta de memória plana.
+
+| Modo | 1º lugar (34 com resposta) | Na resposta (34) | Sem resposta certos (6) | Código certo (32 casos com código) | Arquivo no top 5 do `project_find` (32) | Tokens devolvidos (média) | Tokens Jev por consulta | Custo por consulta | Latência |
+|---|---|---|---|---|---|---|---|---|---|
+| Linha de base, sem chave | 13 | 32 | 0 | — (o 0.5.2 não devolve código a partir de notas) | — | 1.473 | 0 | 0 | 0,53 s |
+| Linha de base, Jev (fichas) | 22 | 31 | 6 | — | — | 399 | cerca de 28.200 | cerca de US$ 0,0012 | 3,5 s |
+| 0.6.0, sem chave | 20 | 30 | 0 | 31 | 17 | 1.470 | 0 | 0 | 0,60 s |
+| 0.6.0, Jev, privacidade `ficha` (padrão) | 26 | 31 | 5 | 30 | 31 | 555 | cerca de 24.300 | cerca de US$ 0,0010 | 1,35 s |
+| 0.6.0, Jev, privacidade `completo` | 29 | 33 | 6 | 31 | 32 | 570 | cerca de 27.500 | cerca de US$ 0,0012 | 1,6 s |
+
+Primeiro lugar por tipo com a 0.6.0 e Jev, `completo`: paráfrase 12/14, direta 5/6, substituída 5/6, código a dois links 5/6, pessoal 2/2. Com `ficha`: 12/14, 5/6, 3/6, 4/6, 2/2. Vazamentos do marcador de nota privada: 0 em todos os modos (o marcador foi procurado no JSON completo de cada resultado).
+
+A regra de ordenação de decisões substituídas (a decisão atual vai logo antes da antiga e é trazida se faltar) foi acrescentada depois de uma primeira rodada neste mesmo conjunto. Nessa primeira rodada, o `completo` teve primeiro lugar em 3/6 nas substituídas, e o `ficha` em 3/6 nelas e 13/14 em paráfrase. A diferença de paráfrase no `ficha` (13 para 12) é variação entre execuções: a regra não mexe nisso. As duas rodadas estão guardadas na pasta (`resultado-jev-*-antes-da-correcao.json` é a primeira). Os erros que restam no `ficha` vêm de notas de reunião e de incidente colocadas acima da decisão, não da ordenação.
+
+Para reproduzir, use os comandos de `bench/second-brain/README.md`; as execuções sem chave foram repetidas em 19/11/2026 e deram a mesma ordenação dos resultados guardados (só a latência muda).
+
+### Limites desta medição
+
+- As notas e as perguntas são sintéticas e foram escritas pelo mesmo autor de IA, então o vocabulário de uma combina com o da outra mais do que num cofre real: os números são otimistas.
+- Conjunto pequeno (40 perguntas, 6 por tipo): diferença de um ou dois casos está dentro da variação entre execuções. Cada modo foi executado uma vez.
+- O modo local sempre enche o teto com o que tem, então nunca responde "nada encontrado" (0 de 6) e "na resposta" fica inflado; o número que importa nele é o primeiro lugar.
+- Os modos com Jev enviam o cofre fictício à TypeSafe. O marcador de nota privada não apareceu em nenhum resultado devolvido.
+- As ligações com código dependem de nomes de arquivo, caminhos e símbolos escritos nas notas e do índice de código.
+- O macOS não foi reverificado para esta versão; o teste automático no GitHub o cobre.

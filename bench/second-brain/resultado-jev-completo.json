@@ -1,0 +1,1516 @@
+{
+  "quando": "2026-11-19T17:43:16.622Z",
+  "resumo": {
+    "modo": "jev-completo",
+    "tetoDeTokens": 1500,
+    "privacidade": "completo",
+    "comChave": true,
+    "pedidos": 40,
+    "porTipo": {
+      "parafrase": {
+        "total": 14,
+        "primeiro": 12,
+        "naResposta": 14,
+        "soNosPonteiros": 0
+      },
+      "direto": {
+        "total": 6,
+        "primeiro": 5,
+        "naResposta": 6,
+        "soNosPonteiros": 0
+      },
+      "substituida": {
+        "total": 6,
+        "primeiro": 5,
+        "naResposta": 6,
+        "soNosPonteiros": 0
+      },
+      "codigo-via-nota": {
+        "total": 6,
+        "primeiro": 5,
+        "naResposta": 5,
+        "soNosPonteiros": 1
+      },
+      "nenhuma": {
+        "total": 6,
+        "primeiro": 6,
+        "naResposta": 6,
+        "soNosPonteiros": 0
+      },
+      "pessoal": {
+        "total": 2,
+        "primeiro": 2,
+        "naResposta": 2,
+        "soNosPonteiros": 0
+      }
+    },
+    "codigoAcertou": {
+      "certos": 31,
+      "total": 32
+    },
+    "codigoNoFind": {
+      "certos": 32,
+      "total": 32,
+      "comNotas": 32
+    },
+    "nenhumaCertas": {
+      "certas": 6,
+      "total": 6
+    },
+    "vazamentos": 0,
+    "falhasDeServico": 0,
+    "mediaDeTokensDevolvidos": 570,
+    "requisicoes": 152,
+    "tokensJev": 1098029,
+    "custoEstimadoUSD": 0.0461,
+    "latenciaMediaMs": 1602
+  },
+  "linhas": [
+    {
+      "pedido": "se cada item da fatura tem fração de centavo, como o total é fechado para o cliente conseguir conferir na calculadora?",
+      "tipo": "parafrase",
+      "esperado": "20 Decisões/D-19 Arredondamento por item.md",
+      "primeiro": "20 Decisões/D-19 Arredondamento por item.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 5,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "20 Decisões/D-19 Arredondamento por item.md",
+        "40 Conceitos/Resíduo de centavos.md",
+        "30 Reuniões/2026-02-03 Reunião de arredondamento.md",
+        "40 Conceitos/Truncamento versus arredondamento.md",
+        "60 Incidentes/I-2026-02 Total da fatura com um centavo a mais.md",
+        "80 Leituras/Artigo - ponto flutuante e dinheiro.md",
+        "20 Decisões/D-07 Arredondar apenas o total da fatura.md",
+        "20 Decisões/D-12 Impostos são truncados, não arredondados.md",
+        "00 Inbox/Ideia - arredondar só no total de novo.md"
+      ],
+      "ponteiros": [
+        "MOCs/MOC Decisões.md",
+        "20 Decisões/D-02 Dinheiro sempre em Decimal.md",
+        "MOCs/MOC Impostos e notas fiscais.md",
+        "MOCs/MOC Incidentes e runbooks.md",
+        "50 Pessoas/Rafael Tonini.md"
+      ],
+      "codigoDevolvido": [
+        "billing/invoice.py",
+        "billing/rounding.py",
+        "taxes/rounding.py",
+        "billing/proration.py",
+        "taxes/iss.py"
+      ],
+      "tokensDevolvidos": 1443,
+      "tokensJev": 25433,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1846
+    },
+    {
+      "pedido": "o banco mandou de novo o arquivo de ontem e a gente creditou duas vezes pros clientes, o que foi feito?",
+      "tipo": "parafrase",
+      "esperado": "60 Incidentes/I-2026-04 Boleto pago em duplicidade.md",
+      "primeiro": "60 Incidentes/I-2026-04 Boleto pago em duplicidade.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 5,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "60 Incidentes/I-2026-04 Boleto pago em duplicidade.md",
+        "60 Incidentes/I-2026-05 Confirmação de Pix processada duas vezes.md",
+        "70 Como fazer/Reprocessar o arquivo de retorno CNAB.md",
+        "20 Decisões/D-14 Chave de idempotência em cobranças e webhooks.md",
+        "30 Reuniões/2026-03-10 Reunião de pagamentos duplicados.md",
+        "30 Reuniões/2026-02-10 Retro do incidente da fatura duplicada.md",
+        "Diário/2026-03-05.md",
+        "40 Conceitos/Conciliação bancária.md"
+      ],
+      "ponteiros": [
+        "70 Como fazer/Reenviar um webhook do Pix.md",
+        "Diário/2026-03-09.md",
+        "40 Conceitos/Cursor de sincronização.md",
+        "MOCs/MOC Pagamentos.md",
+        "MOCs/MOC Incidentes e runbooks.md",
+        "20 Decisões/D-15 Conciliação de boleto pelo retorno CNAB diário.md",
+        "40 Conceitos/Arquivo de retorno CNAB.md",
+        "10 Projetos/Projeto de conciliação automática.md"
+      ],
+      "codigoDevolvido": [
+        "payments/boleto.py",
+        "payments/idempotency.py",
+        "payments/pix.py",
+        "payments/card_gateway.py",
+        "config.py",
+        "billing/recurring.py"
+      ],
+      "tokensDevolvidos": 1291,
+      "tokensJev": 25681,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1627
+    },
+    {
+      "pedido": "quando o cliente é empresa de outra cidade, eu desconto o imposto da cobrança ou não?",
+      "tipo": "parafrase",
+      "esperado": "20 Decisões/D-17 Retenção de ISS apenas para tomador PJ.md",
+      "primeiro": "20 Decisões/D-17 Retenção de ISS apenas para tomador PJ.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 5,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "20 Decisões/D-17 Retenção de ISS apenas para tomador PJ.md",
+        "40 Conceitos/Retenção na fonte.md",
+        "40 Conceitos/Código IBGE do município.md",
+        "40 Conceitos/ISS.md",
+        "50 Pessoas/Rafael Tonini.md"
+      ],
+      "ponteiros": [
+        "00 Inbox/Dúvida sobre município fora da tabela.md",
+        "Diário/2026-05-05.md",
+        "MOCs/MOC Impostos e notas fiscais.md",
+        "20 Decisões/D-12 Impostos são truncados, não arredondados.md",
+        "70 Como fazer/Cadastrar um município novo no ISS.md",
+        "10 Projetos/Nota fiscal nacional.md",
+        "30 Reuniões/2026-05-05 Reunião de impostos e IBGE.md"
+      ],
+      "codigoDevolvido": [
+        "taxes/iss.py",
+        "billing/invoice.py",
+        "taxes/rounding.py",
+        "taxes/nfse.py",
+        "billing/rounding.py"
+      ],
+      "tokensDevolvidos": 947,
+      "tokensJev": 32360,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1883
+    },
+    {
+      "pedido": "por que saíram dois e-mails de pagamento recebido para o mesmo Pix?",
+      "tipo": "parafrase",
+      "esperado": "60 Incidentes/I-2026-05 Confirmação de Pix processada duas vezes.md",
+      "primeiro": "60 Incidentes/I-2026-05 Confirmação de Pix processada duas vezes.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 4,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "60 Incidentes/I-2026-05 Confirmação de Pix processada duas vezes.md",
+        "20 Decisões/D-14 Chave de idempotência em cobranças e webhooks.md",
+        "40 Conceitos/Pix txid e e2eid.md",
+        "MOCs/MOC Pagamentos.md",
+        "40 Conceitos/Idempotência.md",
+        "10 Projetos/Pix cobrança imediata.md",
+        "40 Conceitos/Conciliação bancária.md"
+      ],
+      "ponteiros": [
+        "30 Reuniões/2026-03-03 Conversa sobre retry do gateway.md",
+        "00 Inbox/Links soltos para ler.md",
+        "20 Decisões/D-21 Webhook do Pix exige assinatura HMAC.md",
+        "70 Como fazer/Reenviar um webhook do Pix.md",
+        "50 Pessoas/Marina Albuquerque.md",
+        "40 Conceitos/Arquivo de retorno CNAB.md",
+        "20 Decisões/D-15 Conciliação de boleto pelo retorno CNAB diário.md"
+      ],
+      "codigoDevolvido": [
+        "payments/idempotency.py",
+        "payments/pix.py",
+        "payments/card_gateway.py",
+        "config.py",
+        "payments/boleto.py",
+        "billing/recurring.py"
+      ],
+      "tokensDevolvidos": 1091,
+      "tokensJev": 26072,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1803
+    },
+    {
+      "pedido": "o cliente escolheu pagar num sábado, que data vai impressa no título bancário?",
+      "tipo": "parafrase",
+      "esperado": "20 Decisões/D-18 Boleto nunca vence em dia não útil.md",
+      "primeiro": "20 Decisões/D-18 Boleto nunca vence em dia não útil.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 5,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "20 Decisões/D-18 Boleto nunca vence em dia não útil.md"
+      ],
+      "ponteiros": [
+        "40 Conceitos/Boleto.md",
+        "MOCs/MOC Decisões.md"
+      ],
+      "codigoDevolvido": [
+        "payments/boleto.py"
+      ],
+      "tokensDevolvidos": 138,
+      "tokensJev": 30051,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1992
+    },
+    {
+      "pedido": "em que dia e com que tom a gente cobra por mensagem quem está devendo?",
+      "tipo": "parafrase",
+      "esperado": "20 Decisões/D-28 Régua de cobrança em três estágios.md",
+      "primeiro": "20 Decisões/D-28 Régua de cobrança em três estágios.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 5,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "20 Decisões/D-28 Régua de cobrança em três estágios.md",
+        "30 Reuniões/2026-06-02 Alinhamento da régua de cobrança.md",
+        "40 Conceitos/Régua de cobrança.md"
+      ],
+      "ponteiros": [
+        "60 Incidentes/I-2026-09 WhatsApp enviado sem opt-in.md",
+        "40 Conceitos/Opt-in.md",
+        "20 Decisões/D-08 Cobrança em dois avisos.md",
+        "10 Projetos/Régua de cobrança por WhatsApp.md",
+        "20 Decisões/D-27 WhatsApp só com opt-in.md",
+        "MOCs/MOC Decisões.md"
+      ],
+      "codigoDevolvido": [
+        "jobs/dunning.py",
+        "notifications/templates.py",
+        "notifications/whatsapp.py"
+      ],
+      "tokensDevolvidos": 358,
+      "tokensJev": 28515,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1851
+    },
+    {
+      "pedido": "o financeiro abriu a exportação e os nomes com acento viraram lixo, o que aconteceu?",
+      "tipo": "parafrase",
+      "esperado": "60 Incidentes/I-2026-10 CSV com acentos quebrados.md",
+      "primeiro": "20 Decisões/D-24 CSV para Excel brasileiro.md",
+      "acertouPrimeiro": false,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 5,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "20 Decisões/D-24 CSV para Excel brasileiro.md",
+        "60 Incidentes/I-2026-10 CSV com acentos quebrados.md",
+        "MOCs/MOC Incidentes e runbooks.md",
+        "30 Reuniões/2026-06-30 Conversa sobre CSV e planilhas.md",
+        "70 Como fazer/Gerar o relatório de inadimplência.md"
+      ],
+      "ponteiros": [
+        "70 Como fazer/Importar clientes de planilha.md",
+        "10 Projetos/Relatórios financeiros.md",
+        "70 Como fazer/Rodar a sincronização com o ERP manualmente.md",
+        "70 Como fazer/Reprocessar o arquivo de retorno CNAB.md",
+        "60 Incidentes/I-2026-08 ERP fora do ar travou a sincronização.md"
+      ],
+      "codigoDevolvido": [
+        "reports/export_csv.py",
+        "reports/aging.py",
+        "billing/invoice.py",
+        "billing/rounding.py",
+        "config.py"
+      ],
+      "tokensDevolvidos": 806,
+      "tokensJev": 31978,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 2029
+    },
+    {
+      "pedido": "como garantimos que duas pessoas emitindo ao mesmo tempo não ganhem o mesmo número fiscal?",
+      "tipo": "parafrase",
+      "esperado": "20 Decisões/D-04 Numeração de fatura com lock de linha.md",
+      "primeiro": "20 Decisões/D-04 Numeração de fatura com lock de linha.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 5,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "20 Decisões/D-04 Numeração de fatura com lock de linha.md",
+        "80 Leituras/Designing Data-Intensive Applications - capítulo 7.md",
+        "40 Conceitos/Série de fatura.md"
+      ],
+      "ponteiros": [
+        "30 Reuniões/2026-04-07 Reunião com Alfa ERP.md",
+        "40 Conceitos/Idempotência.md",
+        "70 Como fazer/Inutilizar um número de fatura.md",
+        "MOCs/MOC Decisões.md",
+        "MOCs/MOC Leituras.md"
+      ],
+      "codigoDevolvido": [
+        "billing/numbering.py"
+      ],
+      "tokensDevolvidos": 438,
+      "tokensJev": 28713,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1639
+    },
+    {
+      "pedido": "preciso empurrar as faturas pro sistema do cliente na mão porque o alerta disparou, qual o caminho?",
+      "tipo": "parafrase",
+      "esperado": "70 Como fazer/Rodar a sincronização com o ERP manualmente.md",
+      "primeiro": "70 Como fazer/Rodar a sincronização com o ERP manualmente.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 5,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "70 Como fazer/Rodar a sincronização com o ERP manualmente.md",
+        "20 Decisões/D-30 Falha no ERP interrompe o lote.md",
+        "60 Incidentes/I-2026-08 ERP fora do ar travou a sincronização.md"
+      ],
+      "ponteiros": [
+        "40 Conceitos/ERP e contas a receber.md",
+        "30 Reuniões/2026-04-07 Reunião com Alfa ERP.md",
+        "40 Conceitos/Cursor de sincronização.md",
+        "20 Decisões/D-16 Seguir o lote quando o ERP rejeita uma fatura.md",
+        "MOCs/MOC Incidentes e runbooks.md",
+        "20 Decisões/D-23 Sincronização com o ERP em lotes com cursor.md",
+        "10 Projetos/Integração ERP Alfa.md"
+      ],
+      "codigoDevolvido": [
+        "integrations/erp/sync.py",
+        "integrations/erp/client.py",
+        "integrations/erp/mapping.py"
+      ],
+      "tokensDevolvidos": 457,
+      "tokensJev": 28246,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1630
+    },
+    {
+      "pedido": "assinante entrou no dia 12, qual é a conta do primeiro valor que ele paga?",
+      "tipo": "parafrase",
+      "esperado": "20 Decisões/D-09 Mês comercial de 30 dias no pro rata.md",
+      "primeiro": "20 Decisões/D-09 Mês comercial de 30 dias no pro rata.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 5,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "20 Decisões/D-09 Mês comercial de 30 dias no pro rata.md",
+        "30 Reuniões/2026-05-26 Reunião sobre pro rata.md"
+      ],
+      "ponteiros": [
+        "40 Conceitos/Mês comercial.md",
+        "40 Conceitos/Pro rata.md",
+        "MOCs/MOC Decisões.md",
+        "20 Decisões/D-05 Pro rata pelos dias do mês de calendário.md",
+        "20 Decisões/D-19 Arredondamento por item.md"
+      ],
+      "codigoDevolvido": [
+        "billing/proration.py",
+        "billing/invoice.py",
+        "billing/rounding.py"
+      ],
+      "tokensDevolvidos": 301,
+      "tokensJev": 31618,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1664
+    },
+    {
+      "pedido": "um cliente que já deve muito tenta emitir mais uma fatura, o sistema barra?",
+      "tipo": "parafrase",
+      "esperado": "20 Decisões/D-29 Limite de crédito bloqueia a emissão.md",
+      "primeiro": "20 Decisões/D-29 Limite de crédito bloqueia a emissão.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 5,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "20 Decisões/D-29 Limite de crédito bloqueia a emissão.md",
+        "30 Reuniões/2026-06-23 Reunião sobre limite de crédito.md",
+        "40 Conceitos/Limite de crédito.md"
+      ],
+      "ponteiros": [
+        "MOCs/MOC Decisões.md"
+      ],
+      "codigoDevolvido": [
+        "customers/credit.py"
+      ],
+      "tokensDevolvidos": 302,
+      "tokensJev": 25805,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1635
+    },
+    {
+      "pedido": "preciso trocar a senha mestra que assina as sessões dos usuários, como faço sem derrubar todo mundo?",
+      "tipo": "parafrase",
+      "esperado": "70 Como fazer/Rotacionar o segredo dos tokens.md",
+      "primeiro": "10 Projetos/Endurecimento de autenticação.md",
+      "acertouPrimeiro": false,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 3,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "10 Projetos/Endurecimento de autenticação.md",
+        "60 Incidentes/I-2026-07 Tokens expirando todos ao mesmo tempo.md",
+        "70 Como fazer/Rotacionar o segredo dos tokens.md",
+        "30 Reuniões/2026-05-12 Daily estendida - incidente de tokens.md"
+      ],
+      "ponteiros": [
+        "30 Reuniões/2026-04-28 Planejamento do sprint 9.md",
+        "Diário/2026-05-11.md",
+        "Diário/2026-05-04.md",
+        "30 Reuniões/2026-04-14 Revisão de segurança.md",
+        "MOCs/MOC Incidentes e runbooks.md",
+        "50 Pessoas/Otávio Brandão.md",
+        "MOCs/MOC Faturamento.md"
+      ],
+      "codigoDevolvido": [
+        "api/routes.py",
+        "auth/tokens.py",
+        "config.py"
+      ],
+      "tokensDevolvidos": 614,
+      "tokensJev": 30253,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1676
+    },
+    {
+      "pedido": "como o financeiro enxerga quem está devendo há mais de três meses?",
+      "tipo": "parafrase",
+      "esperado": "40 Conceitos/Faixas de atraso (aging).md",
+      "primeiro": "40 Conceitos/Faixas de atraso (aging).md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 5,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "40 Conceitos/Faixas de atraso (aging).md",
+        "70 Como fazer/Gerar o relatório de inadimplência.md"
+      ],
+      "ponteiros": [
+        "00 Inbox/Ideia de dashboard de inadimplência.md",
+        "Diário/2026-05-18.md",
+        "30 Reuniões/2026-05-19 Demo para o financeiro.md",
+        "20 Decisões/D-28 Régua de cobrança em três estágios.md",
+        "10 Projetos/Relatórios financeiros.md",
+        "20 Decisões/D-24 CSV para Excel brasileiro.md",
+        "MOCs/MOC Incidentes e runbooks.md"
+      ],
+      "codigoDevolvido": [
+        "reports/aging.py",
+        "reports/export_csv.py"
+      ],
+      "tokensDevolvidos": 212,
+      "tokensJev": 26534,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1598
+    },
+    {
+      "pedido": "a prefeitura recusou a nota de serviço, como mando de novo sem criar duplicata?",
+      "tipo": "parafrase",
+      "esperado": "70 Como fazer/Reemitir NFS-e rejeitada.md",
+      "primeiro": "70 Como fazer/Reemitir NFS-e rejeitada.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 5,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "70 Como fazer/Reemitir NFS-e rejeitada.md",
+        "60 Incidentes/I-2026-06 NFS-e rejeitada em Curitiba.md",
+        "40 Conceitos/RPS.md"
+      ],
+      "ponteiros": [
+        "50 Pessoas/Marina Albuquerque.md",
+        "30 Reuniões/2026-04-07 Reunião com Alfa ERP.md",
+        "20 Decisões/D-30 Falha no ERP interrompe o lote.md",
+        "MOCs/MOC Impostos e notas fiscais.md",
+        "MOCs/MOC Incidentes e runbooks.md",
+        "20 Decisões/D-12 Impostos são truncados, não arredondados.md",
+        "40 Conceitos/NFS-e.md",
+        "30 Reuniões/2026-04-21 Retro da NFS-e Curitiba.md"
+      ],
+      "codigoDevolvido": [
+        "taxes/nfse.py",
+        "customers/documents.py",
+        "taxes/rounding.py",
+        "billing/invoice.py"
+      ],
+      "tokensDevolvidos": 474,
+      "tokensJev": 25541,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1600
+    },
+    {
+      "pedido": "O que é nosso número do boleto?",
+      "tipo": "direto",
+      "esperado": "40 Conceitos/Nosso número.md",
+      "primeiro": "40 Conceitos/Arquivo de retorno CNAB.md",
+      "acertouPrimeiro": false,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 5,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "40 Conceitos/Arquivo de retorno CNAB.md",
+        "40 Conceitos/Nosso número.md"
+      ],
+      "ponteiros": [
+        "MOCs/MOC Pagamentos.md",
+        "20 Decisões/D-15 Conciliação de boleto pelo retorno CNAB diário.md",
+        "40 Conceitos/Boleto.md",
+        "70 Como fazer/Reprocessar o arquivo de retorno CNAB.md",
+        "40 Conceitos/Conciliação bancária.md"
+      ],
+      "codigoDevolvido": [
+        "payments/boleto.py"
+      ],
+      "tokensDevolvidos": 340,
+      "tokensJev": 30225,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1556
+    },
+    {
+      "pedido": "Qual a decisão sobre chave de idempotência?",
+      "tipo": "direto",
+      "esperado": "20 Decisões/D-14 Chave de idempotência em cobranças e webhooks.md",
+      "primeiro": "20 Decisões/D-14 Chave de idempotência em cobranças e webhooks.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 5,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "20 Decisões/D-14 Chave de idempotência em cobranças e webhooks.md",
+        "50 Pessoas/Marina Albuquerque.md",
+        "60 Incidentes/I-2026-05 Confirmação de Pix processada duas vezes.md",
+        "40 Conceitos/Pix txid e e2eid.md",
+        "40 Conceitos/Idempotência.md",
+        "MOCs/MOC Pagamentos.md",
+        "30 Reuniões/2026-01-13 Kickoff faturamento v2.md",
+        "60 Incidentes/I-2026-01 Fatura duplicada na recorrência.md"
+      ],
+      "ponteiros": [
+        "10 Projetos/Pix cobrança imediata.md",
+        "70 Como fazer/Reenviar um webhook do Pix.md",
+        "MOCs/MOC Faturamento.md",
+        "20 Decisões/D-21 Webhook do Pix exige assinatura HMAC.md",
+        "50 Pessoas/Diego Faria.md"
+      ],
+      "codigoDevolvido": [
+        "payments/card_gateway.py",
+        "payments/idempotency.py",
+        "payments/pix.py",
+        "config.py",
+        "payments/retry.py",
+        "billing/recurring.py",
+        "payments/boleto.py"
+      ],
+      "tokensDevolvidos": 1456,
+      "tokensJev": 28577,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1386
+    },
+    {
+      "pedido": "Como configurar o ambiente local do faturamento?",
+      "tipo": "direto",
+      "esperado": "70 Como fazer/Configurar o ambiente local.md",
+      "primeiro": "70 Como fazer/Configurar o ambiente local.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 2,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "70 Como fazer/Configurar o ambiente local.md",
+        "MOCs/MOC Faturamento.md"
+      ],
+      "ponteiros": [
+        "30 Reuniões/2026-04-07 Reunião com Alfa ERP.md",
+        "40 Conceitos/NFS-e.md",
+        "70 Como fazer/Rodar os testes.md",
+        "10 Projetos/Onboarding de novos devs.md",
+        "50 Pessoas/Rafael Tonini.md",
+        "50 Pessoas/Henrique Lobo.md",
+        "50 Pessoas/Otávio Brandão.md"
+      ],
+      "codigoDevolvido": [
+        "config.py",
+        "billing/invoice.py",
+        "billing/rounding.py",
+        "billing/recurring.py"
+      ],
+      "tokensDevolvidos": 376,
+      "tokensJev": 27423,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1523
+    },
+    {
+      "pedido": "O que é RPS na NFS-e?",
+      "tipo": "direto",
+      "esperado": "40 Conceitos/RPS.md",
+      "primeiro": "40 Conceitos/RPS.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 4,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "40 Conceitos/RPS.md",
+        "40 Conceitos/NFS-e.md"
+      ],
+      "ponteiros": [
+        "MOCs/MOC Impostos e notas fiscais.md",
+        "70 Como fazer/Reemitir NFS-e rejeitada.md",
+        "10 Projetos/Nota fiscal nacional.md"
+      ],
+      "codigoDevolvido": [
+        "billing/invoice.py",
+        "taxes/nfse.py",
+        "customers/documents.py"
+      ],
+      "tokensDevolvidos": 265,
+      "tokensJev": 28850,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1568
+    },
+    {
+      "pedido": "Como estornar uma fatura paga?",
+      "tipo": "direto",
+      "esperado": "70 Como fazer/Estornar fatura paga.md",
+      "primeiro": "70 Como fazer/Estornar fatura paga.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 5,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "70 Como fazer/Estornar fatura paga.md",
+        "40 Conceitos/Estorno.md"
+      ],
+      "ponteiros": [
+        "00 Inbox/Links soltos para ler.md",
+        "MOCs/MOC Pagamentos.md"
+      ],
+      "codigoDevolvido": [
+        "payments/refunds.py"
+      ],
+      "tokensDevolvidos": 163,
+      "tokensJev": 26474,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1520
+    },
+    {
+      "pedido": "Qual foi o incidente da fatura duplicada na recorrência?",
+      "tipo": "direto",
+      "esperado": "60 Incidentes/I-2026-01 Fatura duplicada na recorrência.md",
+      "primeiro": "60 Incidentes/I-2026-01 Fatura duplicada na recorrência.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 5,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "60 Incidentes/I-2026-01 Fatura duplicada na recorrência.md",
+        "30 Reuniões/2026-02-10 Retro do incidente da fatura duplicada.md",
+        "60 Incidentes/I-2026-04 Boleto pago em duplicidade.md",
+        "MOCs/MOC Incidentes e runbooks.md",
+        "20 Decisões/D-14 Chave de idempotência em cobranças e webhooks.md",
+        "10 Projetos/Pix cobrança imediata.md",
+        "60 Incidentes/I-2026-05 Confirmação de Pix processada duas vezes.md",
+        "10 Projetos/Projeto de conciliação automática.md"
+      ],
+      "ponteiros": [
+        "20 Decisões/D-11 Repetir cobrança a cada 30 segundos.md",
+        "MOCs/MOC Pagamentos.md",
+        "50 Pessoas/Marina Albuquerque.md",
+        "40 Conceitos/Idempotência.md",
+        "50 Pessoas/Diego Faria.md",
+        "70 Como fazer/Reenviar um webhook do Pix.md"
+      ],
+      "codigoDevolvido": [
+        "billing/recurring.py",
+        "payments/boleto.py",
+        "billing/invoice.py",
+        "billing/rounding.py",
+        "reports/export_csv.py",
+        "config.py",
+        "payments/card_gateway.py",
+        "payments/idempotency.py",
+        "payments/pix.py"
+      ],
+      "tokensDevolvidos": 1477,
+      "tokensJev": 28220,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1516
+    },
+    {
+      "pedido": "vamos arredondar só o total no final da fatura, certo?",
+      "tipo": "substituida",
+      "esperado": "20 Decisões/D-19 Arredondamento por item.md",
+      "primeiro": "60 Incidentes/I-2026-02 Total da fatura com um centavo a mais.md",
+      "acertouPrimeiro": false,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 5,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "60 Incidentes/I-2026-02 Total da fatura com um centavo a mais.md",
+        "20 Decisões/D-19 Arredondamento por item.md",
+        "20 Decisões/D-12 Impostos são truncados, não arredondados.md",
+        "40 Conceitos/Resíduo de centavos.md",
+        "40 Conceitos/Truncamento versus arredondamento.md",
+        "50 Pessoas/Rafael Tonini.md",
+        "30 Reuniões/2026-02-03 Reunião de arredondamento.md"
+      ],
+      "ponteiros": [
+        "80 Leituras/Artigo - ponto flutuante e dinheiro.md",
+        "20 Decisões/D-02 Dinheiro sempre em Decimal.md",
+        "MOCs/MOC Impostos e notas fiscais.md",
+        "MOCs/MOC Decisões.md",
+        "20 Decisões/D-07 Arredondar apenas o total da fatura.md",
+        "20 Decisões/D-17 Retenção de ISS apenas para tomador PJ.md",
+        "MOCs/MOC Incidentes e runbooks.md"
+      ],
+      "codigoDevolvido": [
+        "billing/invoice.py",
+        "billing/rounding.py",
+        "taxes/rounding.py",
+        "billing/proration.py",
+        "taxes/iss.py"
+      ],
+      "tokensDevolvidos": 1386,
+      "tokensJev": 26315,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1528
+    },
+    {
+      "pedido": "o retry da cobrança ainda é de 30 em 30 segundos, com três tentativas?",
+      "tipo": "substituida",
+      "esperado": "20 Decisões/D-26 Backoff exponencial com jitter.md",
+      "primeiro": "20 Decisões/D-26 Backoff exponencial com jitter.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 5,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "20 Decisões/D-26 Backoff exponencial com jitter.md",
+        "20 Decisões/D-11 Repetir cobrança a cada 30 segundos.md",
+        "60 Incidentes/I-2026-03 Fila de cobrança derrubou o gateway.md",
+        "30 Reuniões/2026-03-03 Conversa sobre retry do gateway.md",
+        "10 Projetos/Faturamento v2.md"
+      ],
+      "ponteiros": [
+        "00 Inbox/Ideia - jitter também no ERP.md",
+        "50 Pessoas/Marina Albuquerque.md",
+        "40 Conceitos/Régua de cobrança.md",
+        "MOCs/MOC Pagamentos.md",
+        "MOCs/MOC Decisões.md",
+        "MOCs/MOC Incidentes e runbooks.md",
+        "40 Conceitos/Falha transitória e permanente.md",
+        "30 Reuniões/2026-01-13 Kickoff faturamento v2.md"
+      ],
+      "codigoDevolvido": [
+        "config.py",
+        "payments/card_gateway.py",
+        "payments/retry.py",
+        "integrations/erp/client.py",
+        "payments/legacy_retry.py",
+        "billing/invoice.py",
+        "billing/rounding.py"
+      ],
+      "tokensDevolvidos": 1018,
+      "tokensJev": 26628,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1657
+    },
+    {
+      "pedido": "na baixa de boleto a gente aceita só um centavo de diferença?",
+      "tipo": "substituida",
+      "esperado": "20 Decisões/D-20 Conciliação tolera até cinco centavos.md",
+      "primeiro": "20 Decisões/D-20 Conciliação tolera até cinco centavos.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 5,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "20 Decisões/D-20 Conciliação tolera até cinco centavos.md",
+        "20 Decisões/D-13 Conciliação aceita diferença de um centavo.md",
+        "30 Reuniões/2026-03-24 Alinhamento com o financeiro sobre conciliação.md",
+        "MOCs/MOC Pagamentos.md",
+        "40 Conceitos/Conciliação bancária.md",
+        "MOCs/MOC Decisões.md",
+        "10 Projetos/Projeto de conciliação automática.md"
+      ],
+      "ponteiros": [
+        "30 Reuniões/2026-02-03 Reunião de arredondamento.md",
+        "40 Conceitos/Resíduo de centavos.md",
+        "20 Decisões/D-19 Arredondamento por item.md",
+        "20 Decisões/D-15 Conciliação de boleto pelo retorno CNAB diário.md",
+        "MOCs/MOC Faturamento.md",
+        "40 Conceitos/Arquivo de retorno CNAB.md",
+        "60 Incidentes/I-2026-04 Boleto pago em duplicidade.md",
+        "20 Decisões/D-14 Chave de idempotência em cobranças e webhooks.md"
+      ],
+      "codigoDevolvido": [
+        "payments/boleto.py",
+        "payments/card_gateway.py",
+        "payments/idempotency.py",
+        "payments/pix.py",
+        "billing/invoice.py",
+        "billing/rounding.py",
+        "billing/numbering.py",
+        "billing/proration.py",
+        "billing/recurring.py"
+      ],
+      "tokensDevolvidos": 1254,
+      "tokensJev": 28011,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1809
+    },
+    {
+      "pedido": "se o ERP recusar uma fatura, a gente pula e segue com as outras do lote?",
+      "tipo": "substituida",
+      "esperado": "20 Decisões/D-30 Falha no ERP interrompe o lote.md",
+      "primeiro": "20 Decisões/D-30 Falha no ERP interrompe o lote.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 4,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "20 Decisões/D-30 Falha no ERP interrompe o lote.md",
+        "70 Como fazer/Rodar a sincronização com o ERP manualmente.md",
+        "40 Conceitos/Cursor de sincronização.md",
+        "20 Decisões/D-16 Seguir o lote quando o ERP rejeita uma fatura.md",
+        "60 Incidentes/I-2026-08 ERP fora do ar travou a sincronização.md",
+        "20 Decisões/D-23 Sincronização com o ERP em lotes com cursor.md",
+        "40 Conceitos/Falha transitória e permanente.md",
+        "10 Projetos/Integração ERP Alfa.md"
+      ],
+      "ponteiros": [
+        "MOCs/MOC Decisões.md",
+        "MOCs/MOC Incidentes e runbooks.md",
+        "50 Pessoas/Henrique Lobo.md",
+        "30 Reuniões/2026-04-07 Reunião com Alfa ERP.md",
+        "MOCs/MOC Faturamento.md"
+      ],
+      "codigoDevolvido": [
+        "integrations/erp/sync.py",
+        "integrations/erp/client.py",
+        "integrations/erp/mapping.py",
+        "payments/retry.py",
+        "config.py",
+        "payments/card_gateway.py"
+      ],
+      "tokensDevolvidos": 1146,
+      "tokensJev": 28476,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1845
+    },
+    {
+      "pedido": "o pro rata usa os dias reais do mês de calendário?",
+      "tipo": "substituida",
+      "esperado": "20 Decisões/D-09 Mês comercial de 30 dias no pro rata.md",
+      "primeiro": "20 Decisões/D-09 Mês comercial de 30 dias no pro rata.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 4,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "20 Decisões/D-09 Mês comercial de 30 dias no pro rata.md",
+        "20 Decisões/D-05 Pro rata pelos dias do mês de calendário.md",
+        "30 Reuniões/2026-05-26 Reunião sobre pro rata.md",
+        "40 Conceitos/Mês comercial.md",
+        "MOCs/MOC Decisões.md",
+        "40 Conceitos/Pro rata.md"
+      ],
+      "ponteiros": [
+        "Diário/2026-03-04.md",
+        "20 Decisões/D-19 Arredondamento por item.md",
+        "MOCs/MOC Faturamento.md",
+        "20 Decisões/D-02 Dinheiro sempre em Decimal.md",
+        "20 Decisões/D-07 Arredondar apenas o total da fatura.md",
+        "20 Decisões/D-12 Impostos são truncados, não arredondados.md"
+      ],
+      "codigoDevolvido": [
+        "billing/proration.py",
+        "billing/invoice.py",
+        "billing/rounding.py",
+        "billing/numbering.py"
+      ],
+      "tokensDevolvidos": 1012,
+      "tokensJev": 25954,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1921
+    },
+    {
+      "pedido": "a cobrança de atrasados são dois avisos, com 3 e 10 dias?",
+      "tipo": "substituida",
+      "esperado": "20 Decisões/D-28 Régua de cobrança em três estágios.md",
+      "primeiro": "20 Decisões/D-28 Régua de cobrança em três estágios.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 5,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "20 Decisões/D-28 Régua de cobrança em três estágios.md",
+        "20 Decisões/D-08 Cobrança em dois avisos.md",
+        "30 Reuniões/2026-06-02 Alinhamento da régua de cobrança.md",
+        "40 Conceitos/Régua de cobrança.md",
+        "10 Projetos/Régua de cobrança por WhatsApp.md"
+      ],
+      "ponteiros": [
+        "20 Decisões/D-27 WhatsApp só com opt-in.md",
+        "MOCs/MOC Decisões.md",
+        "50 Pessoas/Carla Menezes.md",
+        "60 Incidentes/I-2026-09 WhatsApp enviado sem opt-in.md",
+        "MOCs/MOC Faturamento.md"
+      ],
+      "codigoDevolvido": [
+        "jobs/dunning.py",
+        "notifications/templates.py",
+        "notifications/whatsapp.py"
+      ],
+      "tokensDevolvidos": 639,
+      "tokensJev": 24336,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1855
+    },
+    {
+      "pedido": "dividi cem reais em três vezes e sobrou um centavo, quem fica com ele?",
+      "tipo": "codigo-via-nota",
+      "esperado": "40 Conceitos/Resíduo de centavos.md",
+      "primeiro": "40 Conceitos/Resíduo de centavos.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 3,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "40 Conceitos/Resíduo de centavos.md",
+        "20 Decisões/D-19 Arredondamento por item.md"
+      ],
+      "ponteiros": [
+        "80 Leituras/Artigo - ponto flutuante e dinheiro.md",
+        "20 Decisões/D-20 Conciliação tolera até cinco centavos.md",
+        "40 Conceitos/Truncamento versus arredondamento.md",
+        "30 Reuniões/2026-02-03 Reunião de arredondamento.md",
+        "20 Decisões/D-02 Dinheiro sempre em Decimal.md",
+        "60 Incidentes/I-2026-02 Total da fatura com um centavo a mais.md",
+        "20 Decisões/D-07 Arredondar apenas o total da fatura.md",
+        "MOCs/MOC Decisões.md"
+      ],
+      "codigoDevolvido": [
+        "billing/invoice.py",
+        "billing/rounding.py",
+        "taxes/rounding.py",
+        "billing/proration.py"
+      ],
+      "tokensDevolvidos": 389,
+      "tokensJev": 25979,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1694
+    },
+    {
+      "pedido": "o que ficou combinado na conversa com o financeiro sobre baixa duplicada de boleto?",
+      "tipo": "codigo-via-nota",
+      "esperado": "30 Reuniões/2026-03-10 Reunião de pagamentos duplicados.md",
+      "primeiro": "nenhuma",
+      "acertouPrimeiro": false,
+      "estaNaResposta": false,
+      "estaNosPonteiros": true,
+      "codigoAcertou": false,
+      "codigoNoFind": true,
+      "notasNoFind": 5,
+      "vazouPrivado": false,
+      "devolvidos": [],
+      "ponteiros": [
+        "60 Incidentes/I-2026-04 Boleto pago em duplicidade.md",
+        "30 Reuniões/2026-03-10 Reunião de pagamentos duplicados.md",
+        "Diário/2026-03-05.md",
+        "MOCs/MOC Incidentes e runbooks.md",
+        "Diário/2026-03-10.md"
+      ],
+      "codigoDevolvido": [],
+      "tokensDevolvidos": 0,
+      "tokensJev": 29808,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "none",
+      "ms": 1657
+    },
+    {
+      "pedido": "em que pé está o projeto de avisar atrasado pelo zap?",
+      "tipo": "codigo-via-nota",
+      "esperado": "10 Projetos/Régua de cobrança por WhatsApp.md",
+      "primeiro": "10 Projetos/Régua de cobrança por WhatsApp.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 4,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "10 Projetos/Régua de cobrança por WhatsApp.md",
+        "Diário/2026-05-20.md",
+        "Diário/2026-05-04.md"
+      ],
+      "ponteiros": [
+        "Diário/2026-05-19.md",
+        "20 Decisões/D-08 Cobrança em dois avisos.md",
+        "60 Incidentes/I-2026-09 WhatsApp enviado sem opt-in.md",
+        "20 Decisões/D-27 WhatsApp só com opt-in.md",
+        "MOCs/MOC Faturamento.md",
+        "20 Decisões/D-28 Régua de cobrança em três estágios.md",
+        "50 Pessoas/Carla Menezes.md"
+      ],
+      "codigoDevolvido": [
+        "notifications/whatsapp.py",
+        "jobs/dunning.py",
+        "notifications/templates.py"
+      ],
+      "tokensDevolvidos": 262,
+      "tokensJev": 30247,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1888
+    },
+    {
+      "pedido": "o que é esse marcador que o ERP usa pra saber de onde continuar o envio?",
+      "tipo": "codigo-via-nota",
+      "esperado": "40 Conceitos/Cursor de sincronização.md",
+      "primeiro": "40 Conceitos/Cursor de sincronização.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 4,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "40 Conceitos/Cursor de sincronização.md",
+        "20 Decisões/D-23 Sincronização com o ERP em lotes com cursor.md",
+        "20 Decisões/D-30 Falha no ERP interrompe o lote.md",
+        "70 Como fazer/Rodar a sincronização com o ERP manualmente.md",
+        "30 Reuniões/2026-04-07 Reunião com Alfa ERP.md",
+        "10 Projetos/Integração ERP Alfa.md"
+      ],
+      "ponteiros": [
+        "60 Incidentes/I-2026-08 ERP fora do ar travou a sincronização.md",
+        "MOCs/MOC Decisões.md",
+        "20 Decisões/D-16 Seguir o lote quando o ERP rejeita uma fatura.md",
+        "40 Conceitos/ERP e contas a receber.md",
+        "50 Pessoas/Henrique Lobo.md"
+      ],
+      "codigoDevolvido": [
+        "integrations/erp/client.py",
+        "integrations/erp/sync.py",
+        "integrations/erp/mapping.py",
+        "payments/retry.py"
+      ],
+      "tokensDevolvidos": 875,
+      "tokensJev": 26960,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1516
+    },
+    {
+      "pedido": "quem é o dono do módulo de impostos e o que ele já decidiu?",
+      "tipo": "codigo-via-nota",
+      "esperado": "50 Pessoas/Rafael Tonini.md",
+      "primeiro": "50 Pessoas/Rafael Tonini.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 3,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "50 Pessoas/Rafael Tonini.md",
+        "MOCs/MOC Impostos e notas fiscais.md",
+        "30 Reuniões/2026-02-03 Reunião de arredondamento.md",
+        "Diário/2026-03-11.md",
+        "Diário/2026-05-05.md"
+      ],
+      "ponteiros": [
+        "30 Reuniões/2026-05-05 Reunião de impostos e IBGE.md",
+        "MOCs/MOC Decisões.md",
+        "20 Decisões/D-12 Impostos são truncados, não arredondados.md",
+        "20 Decisões/D-17 Retenção de ISS apenas para tomador PJ.md",
+        "10 Projetos/Nota fiscal nacional.md",
+        "10 Projetos/Reforma tributária.md",
+        "70 Como fazer/Cadastrar um município novo no ISS.md"
+      ],
+      "codigoDevolvido": [
+        "taxes/rounding.py",
+        "taxes/iss.py",
+        "billing/invoice.py",
+        "taxes/nfse.py",
+        "billing/rounding.py"
+      ],
+      "tokensDevolvidos": 753,
+      "tokensJev": 29496,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1525
+    },
+    {
+      "pedido": "de onde vem aquele número de 7 dígitos do município que o cálculo do imposto consulta?",
+      "tipo": "codigo-via-nota",
+      "esperado": "40 Conceitos/Código IBGE do município.md",
+      "primeiro": "40 Conceitos/Código IBGE do município.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": true,
+      "codigoNoFind": true,
+      "notasNoFind": 4,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "40 Conceitos/Código IBGE do município.md",
+        "70 Como fazer/Cadastrar um município novo no ISS.md",
+        "40 Conceitos/ISS.md",
+        "20 Decisões/D-17 Retenção de ISS apenas para tomador PJ.md"
+      ],
+      "ponteiros": [
+        "70 Como fazer/Importar clientes de planilha.md",
+        "MOCs/MOC Impostos e notas fiscais.md",
+        "50 Pessoas/Rafael Tonini.md",
+        "40 Conceitos/Retenção na fonte.md",
+        "30 Reuniões/2026-05-05 Reunião de impostos e IBGE.md",
+        "40 Conceitos/Truncamento versus arredondamento.md"
+      ],
+      "codigoDevolvido": [
+        "taxes/iss.py",
+        "billing/invoice.py",
+        "taxes/nfse.py",
+        "billing/rounding.py",
+        "taxes/rounding.py"
+      ],
+      "tokensDevolvidos": 648,
+      "tokensJev": 31552,
+      "requisicoes": 4,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1480
+    },
+    {
+      "pedido": "como emitimos nota fiscal de produto, NF-e com ICMS, para o e-commerce?",
+      "tipo": "nenhuma",
+      "esperado": "nenhuma",
+      "primeiro": "nenhuma",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": null,
+      "codigoNoFind": null,
+      "notasNoFind": 0,
+      "vazouPrivado": false,
+      "devolvidos": [],
+      "ponteiros": [
+        "50 Pessoas/Rafael Tonini.md",
+        "40 Conceitos/Código IBGE do município.md"
+      ],
+      "codigoDevolvido": [],
+      "tokensDevolvidos": 0,
+      "tokensJev": 21526,
+      "requisicoes": 3,
+      "estrategia": "cards",
+      "status": "none",
+      "ms": 1215
+    },
+    {
+      "pedido": "qual o SLA contratado com o banco para o webhook do Pix?",
+      "tipo": "nenhuma",
+      "esperado": "nenhuma",
+      "primeiro": "nenhuma",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": null,
+      "codigoNoFind": null,
+      "notasNoFind": 0,
+      "vazouPrivado": false,
+      "devolvidos": [],
+      "ponteiros": [
+        "60 Incidentes/I-2026-05 Confirmação de Pix processada duas vezes.md"
+      ],
+      "codigoDevolvido": [],
+      "tokensDevolvidos": 0,
+      "tokensJev": 25557,
+      "requisicoes": 3,
+      "estrategia": "cards",
+      "status": "none",
+      "ms": 1239
+    },
+    {
+      "pedido": "como funciona o login único com conta Google no painel?",
+      "tipo": "nenhuma",
+      "esperado": "nenhuma",
+      "primeiro": "nenhuma",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": null,
+      "codigoNoFind": null,
+      "notasNoFind": 0,
+      "vazouPrivado": false,
+      "devolvidos": [],
+      "ponteiros": [],
+      "codigoDevolvido": [],
+      "tokensDevolvidos": 0,
+      "tokensJev": 27016,
+      "requisicoes": 3,
+      "estrategia": "cards",
+      "status": "none",
+      "ms": 1296
+    },
+    {
+      "pedido": "onde está a política de LGPD de retenção e descarte de dados dos clientes?",
+      "tipo": "nenhuma",
+      "esperado": "nenhuma",
+      "primeiro": "nenhuma",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": null,
+      "codigoNoFind": null,
+      "notasNoFind": 0,
+      "vazouPrivado": false,
+      "devolvidos": [],
+      "ponteiros": [],
+      "codigoDevolvido": [],
+      "tokensDevolvidos": 0,
+      "tokensJev": 26686,
+      "requisicoes": 3,
+      "estrategia": "cards",
+      "status": "none",
+      "ms": 1273
+    },
+    {
+      "pedido": "o que decidimos sobre usar Kafka para os eventos de pagamento?",
+      "tipo": "nenhuma",
+      "esperado": "nenhuma",
+      "primeiro": "nenhuma",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": null,
+      "codigoNoFind": null,
+      "notasNoFind": 0,
+      "vazouPrivado": false,
+      "devolvidos": [],
+      "ponteiros": [],
+      "codigoDevolvido": [],
+      "tokensDevolvidos": 0,
+      "tokensJev": 27853,
+      "requisicoes": 3,
+      "estrategia": "cards",
+      "status": "none",
+      "ms": 1296
+    },
+    {
+      "pedido": "como parcelamos a fatura no cartão em 12 vezes com juros?",
+      "tipo": "nenhuma",
+      "esperado": "nenhuma",
+      "primeiro": "nenhuma",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": null,
+      "codigoNoFind": null,
+      "notasNoFind": 0,
+      "vazouPrivado": false,
+      "devolvidos": [],
+      "ponteiros": [],
+      "codigoDevolvido": [],
+      "tokensDevolvidos": 0,
+      "tokensJev": 21818,
+      "requisicoes": 3,
+      "estrategia": "cards",
+      "status": "none",
+      "ms": 1274
+    },
+    {
+      "pedido": "qual era a ideia principal daquele livro sobre hábitos pequenos que eu li?",
+      "tipo": "pessoal",
+      "esperado": "80 Leituras/Hábitos Atômicos - notas.md",
+      "primeiro": "80 Leituras/Hábitos Atômicos - notas.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": null,
+      "codigoNoFind": null,
+      "notasNoFind": 0,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "80 Leituras/Hábitos Atômicos - notas.md",
+        "Diário/2026-05-22.md"
+      ],
+      "ponteiros": [
+        "MOCs/MOC Leituras.md"
+      ],
+      "codigoDevolvido": [],
+      "tokensDevolvidos": 187,
+      "tokensJev": 23000,
+      "requisicoes": 3,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1291
+    },
+    {
+      "pedido": "o que eu anotei sobre o livro que explica por que precisamos de oito horas de descanso?",
+      "tipo": "pessoal",
+      "esperado": "80 Leituras/Por que dormimos - notas.md",
+      "primeiro": "80 Leituras/Por que dormimos - notas.md",
+      "acertouPrimeiro": true,
+      "estaNaResposta": true,
+      "estaNosPonteiros": false,
+      "codigoAcertou": null,
+      "codigoNoFind": null,
+      "notasNoFind": 0,
+      "vazouPrivado": false,
+      "devolvidos": [
+        "80 Leituras/Por que dormimos - notas.md",
+        "MOCs/MOC Leituras.md"
+      ],
+      "ponteiros": [
+        "80 Leituras/Deep Work - notas.md",
+        "80 Leituras/Como ler livros - notas.md",
+        "80 Leituras/Rápido e devagar - notas.md",
+        "MOCs/MOC Faturamento.md",
+        "80 Leituras/Meditações - notas.md"
+      ],
+      "codigoDevolvido": [],
+      "tokensDevolvidos": 291,
+      "tokensJev": 24242,
+      "requisicoes": 3,
+      "estrategia": "cards",
+      "status": "ok",
+      "ms": 1282
+    }
+  ]
+}

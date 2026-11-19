@@ -1,0 +1,47 @@
+[
+  { "pedido": "se cada item da fatura tem fração de centavo, como o total é fechado para o cliente conseguir conferir na calculadora?", "esperado": "20 Decisões/D-19 Arredondamento por item.md", "codigo": ["billing/rounding.py", "billing/invoice.py"], "tipo": "parafrase" },
+  { "pedido": "o banco mandou de novo o arquivo de ontem e a gente creditou duas vezes pros clientes, o que foi feito?", "esperado": "60 Incidentes/I-2026-04 Boleto pago em duplicidade.md", "codigo": ["payments/boleto.py"], "tipo": "parafrase" },
+  { "pedido": "quando o cliente é empresa de outra cidade, eu desconto o imposto da cobrança ou não?", "esperado": "20 Decisões/D-17 Retenção de ISS apenas para tomador PJ.md", "codigo": ["taxes/iss.py"], "tipo": "parafrase" },
+  { "pedido": "por que saíram dois e-mails de pagamento recebido para o mesmo Pix?", "esperado": "60 Incidentes/I-2026-05 Confirmação de Pix processada duas vezes.md", "codigo": ["payments/pix.py", "payments/idempotency.py"], "tipo": "parafrase" },
+  { "pedido": "o cliente escolheu pagar num sábado, que data vai impressa no título bancário?", "esperado": "20 Decisões/D-18 Boleto nunca vence em dia não útil.md", "codigo": ["payments/boleto.py"], "tipo": "parafrase" },
+  { "pedido": "em que dia e com que tom a gente cobra por mensagem quem está devendo?", "esperado": "20 Decisões/D-28 Régua de cobrança em três estágios.md", "codigo": ["jobs/dunning.py", "notifications/templates.py"], "tipo": "parafrase" },
+  { "pedido": "o financeiro abriu a exportação e os nomes com acento viraram lixo, o que aconteceu?", "esperado": "60 Incidentes/I-2026-10 CSV com acentos quebrados.md", "codigo": ["reports/export_csv.py"], "tipo": "parafrase" },
+  { "pedido": "como garantimos que duas pessoas emitindo ao mesmo tempo não ganhem o mesmo número fiscal?", "esperado": "20 Decisões/D-04 Numeração de fatura com lock de linha.md", "codigo": ["billing/numbering.py"], "tipo": "parafrase" },
+  { "pedido": "preciso empurrar as faturas pro sistema do cliente na mão porque o alerta disparou, qual o caminho?", "esperado": "70 Como fazer/Rodar a sincronização com o ERP manualmente.md", "codigo": ["integrations/erp/sync.py"], "tipo": "parafrase" },
+  { "pedido": "assinante entrou no dia 12, qual é a conta do primeiro valor que ele paga?", "esperado": "20 Decisões/D-09 Mês comercial de 30 dias no pro rata.md", "codigo": ["billing/proration.py"], "tipo": "parafrase" },
+  { "pedido": "um cliente que já deve muito tenta emitir mais uma fatura, o sistema barra?", "esperado": "20 Decisões/D-29 Limite de crédito bloqueia a emissão.md", "codigo": ["customers/credit.py"], "tipo": "parafrase" },
+  { "pedido": "preciso trocar a senha mestra que assina as sessões dos usuários, como faço sem derrubar todo mundo?", "esperado": "70 Como fazer/Rotacionar o segredo dos tokens.md", "codigo": ["auth/tokens.py", "config.py"], "tipo": "parafrase" },
+  { "pedido": "como o financeiro enxerga quem está devendo há mais de três meses?", "esperado": "40 Conceitos/Faixas de atraso (aging).md", "codigo": ["reports/aging.py"], "tipo": "parafrase" },
+  { "pedido": "a prefeitura recusou a nota de serviço, como mando de novo sem criar duplicata?", "esperado": "70 Como fazer/Reemitir NFS-e rejeitada.md", "codigo": ["taxes/nfse.py"], "tipo": "parafrase" },
+
+  { "pedido": "O que é nosso número do boleto?", "esperado": "40 Conceitos/Nosso número.md", "codigo": ["payments/boleto.py"], "tipo": "direto" },
+  { "pedido": "Qual a decisão sobre chave de idempotência?", "esperado": "20 Decisões/D-14 Chave de idempotência em cobranças e webhooks.md", "codigo": ["payments/idempotency.py"], "tipo": "direto" },
+  { "pedido": "Como configurar o ambiente local do faturamento?", "esperado": "70 Como fazer/Configurar o ambiente local.md", "codigo": ["config.py"], "tipo": "direto" },
+  { "pedido": "O que é RPS na NFS-e?", "esperado": "40 Conceitos/RPS.md", "codigo": ["taxes/nfse.py"], "tipo": "direto" },
+  { "pedido": "Como estornar uma fatura paga?", "esperado": "70 Como fazer/Estornar fatura paga.md", "codigo": ["payments/refunds.py"], "tipo": "direto" },
+  { "pedido": "Qual foi o incidente da fatura duplicada na recorrência?", "esperado": "60 Incidentes/I-2026-01 Fatura duplicada na recorrência.md", "codigo": ["billing/recurring.py"], "tipo": "direto" },
+
+  { "pedido": "vamos arredondar só o total no final da fatura, certo?", "esperado": "20 Decisões/D-19 Arredondamento por item.md", "codigo": ["billing/rounding.py"], "tipo": "substituida" },
+  { "pedido": "o retry da cobrança ainda é de 30 em 30 segundos, com três tentativas?", "esperado": "20 Decisões/D-26 Backoff exponencial com jitter.md", "codigo": ["payments/retry.py"], "tipo": "substituida" },
+  { "pedido": "na baixa de boleto a gente aceita só um centavo de diferença?", "esperado": "20 Decisões/D-20 Conciliação tolera até cinco centavos.md", "codigo": ["payments/boleto.py"], "tipo": "substituida" },
+  { "pedido": "se o ERP recusar uma fatura, a gente pula e segue com as outras do lote?", "esperado": "20 Decisões/D-30 Falha no ERP interrompe o lote.md", "codigo": ["integrations/erp/sync.py"], "tipo": "substituida" },
+  { "pedido": "o pro rata usa os dias reais do mês de calendário?", "esperado": "20 Decisões/D-09 Mês comercial de 30 dias no pro rata.md", "codigo": ["billing/proration.py"], "tipo": "substituida" },
+  { "pedido": "a cobrança de atrasados são dois avisos, com 3 e 10 dias?", "esperado": "20 Decisões/D-28 Régua de cobrança em três estágios.md", "codigo": ["jobs/dunning.py"], "tipo": "substituida" },
+
+  { "pedido": "dividi cem reais em três vezes e sobrou um centavo, quem fica com ele?", "esperado": "40 Conceitos/Resíduo de centavos.md", "codigo": ["billing/rounding.py"], "tipo": "codigo-via-nota" },
+  { "pedido": "o que ficou combinado na conversa com o financeiro sobre baixa duplicada de boleto?", "esperado": "30 Reuniões/2026-03-10 Reunião de pagamentos duplicados.md", "codigo": ["payments/boleto.py"], "tipo": "codigo-via-nota" },
+  { "pedido": "em que pé está o projeto de avisar atrasado pelo zap?", "esperado": "10 Projetos/Régua de cobrança por WhatsApp.md", "codigo": ["jobs/dunning.py", "notifications/whatsapp.py"], "tipo": "codigo-via-nota" },
+  { "pedido": "o que é esse marcador que o ERP usa pra saber de onde continuar o envio?", "esperado": "40 Conceitos/Cursor de sincronização.md", "codigo": ["integrations/erp/sync.py"], "tipo": "codigo-via-nota" },
+  { "pedido": "quem é o dono do módulo de impostos e o que ele já decidiu?", "esperado": "50 Pessoas/Rafael Tonini.md", "codigo": ["taxes/rounding.py", "taxes/iss.py"], "tipo": "codigo-via-nota" },
+  { "pedido": "de onde vem aquele número de 7 dígitos do município que o cálculo do imposto consulta?", "esperado": "40 Conceitos/Código IBGE do município.md", "codigo": ["taxes/iss.py"], "tipo": "codigo-via-nota" },
+
+  { "pedido": "como emitimos nota fiscal de produto, NF-e com ICMS, para o e-commerce?", "esperado": "nenhuma", "codigo": [], "tipo": "nenhuma" },
+  { "pedido": "qual o SLA contratado com o banco para o webhook do Pix?", "esperado": "nenhuma", "codigo": [], "tipo": "nenhuma" },
+  { "pedido": "como funciona o login único com conta Google no painel?", "esperado": "nenhuma", "codigo": [], "tipo": "nenhuma" },
+  { "pedido": "onde está a política de LGPD de retenção e descarte de dados dos clientes?", "esperado": "nenhuma", "codigo": [], "tipo": "nenhuma" },
+  { "pedido": "o que decidimos sobre usar Kafka para os eventos de pagamento?", "esperado": "nenhuma", "codigo": [], "tipo": "nenhuma" },
+  { "pedido": "como parcelamos a fatura no cartão em 12 vezes com juros?", "esperado": "nenhuma", "codigo": [], "tipo": "nenhuma" },
+
+  { "pedido": "qual era a ideia principal daquele livro sobre hábitos pequenos que eu li?", "esperado": "80 Leituras/Hábitos Atômicos - notas.md", "codigo": [], "tipo": "pessoal" },
+  { "pedido": "o que eu anotei sobre o livro que explica por que precisamos de oito horas de descanso?", "esperado": "80 Leituras/Por que dormimos - notas.md", "codigo": [], "tipo": "pessoal" }
+]

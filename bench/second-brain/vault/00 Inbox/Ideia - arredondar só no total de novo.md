@@ -1,0 +1,1 @@
+Pensando alto: e se voltássemos a arredondar só o total? Menos centavos "perdidos" em faturas de muitos itens. Mas o PDF mostra item a item... enfim, melhor deixar como está. Perguntar ao Rafael se isso afeta nota fiscal.

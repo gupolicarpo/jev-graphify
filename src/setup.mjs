@@ -42,12 +42,17 @@ export async function setup(project, { install = true, index = true, update } = 
   let indexed = null;
   if (index) { indexed = await update(project); steps.push('index: ' + (indexed.project ? indexed.project.files + ' code files in ' + indexed.project.nucleos + ' clusters' : 'memory updated (no code configured)')); }
   const key = Boolean(process.env.JEV_API_KEY);
+  // Second Brain nunca é ligado sozinho: só avisa como ativar quando acha uma pasta de notas.
+  const vaults = [];
+  for (const d of ['.obsidian', 'notes', 'brain', 'vault']) if ((await lstat(resolve(project, d)).catch(() => null))?.isDirectory()) vaults.push(d);
+  const brainHint = vaults.length && !config?.brain ? ['Second Brain: found ' + vaults.join(', ') + '. It is not enabled automatically; to use it add "brain": { "roots": ["' + (vaults[0] === '.obsidian' ? '.' : vaults[0]) + '"] } to .jev-graphify.json and run update.'] : [];
   return {
     status: 'ready', project, steps, index: indexed,
     next: [
       key ? 'The JEV_API_KEY key is in the environment.' : 'The key is missing: set JEV_API_KEY in the environment of the program that opens the agent (without it the search is local, keyword-based and much weaker).',
       'Open (or restart) the agent in the project folder and approve the jev-graphify server.',
       'Suggestion: add .jev-graphify/ to the project .gitignore.',
+      ...brainHint,
     ],
   };
 }

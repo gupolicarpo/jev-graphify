@@ -1,4 +1,4 @@
-# Verified compatibility — 0.5.2 (history since 0.1.1)
+# Verified compatibility — 0.6.0 (history since 0.1.1)
 
 Date: 12 Nov 2026. Environment: Windows x64, Node.js 24.19.0, npm 11.17.0, CPython 3.13.15. All data used was fictitious. No real paid call to Jev or to an LLM was made.
 
@@ -112,3 +112,35 @@ Working logs with local paths stay outside the ZIP. The distributed summary keep
 - **English texts.** The tool descriptions, the messages (errors, `setup`, result notes), the plugin skill and the labels of the cards sent to Jev were switched to English. Names of fields, options and values of the data format did not change (`nucleos`, `modulos`, `completo`, `ficha`, etc.).
 - Since the card labels changed, the 24 reference questions were repeated on the real project with the real Jev (13 Nov 2026): 18 1st, 22 among the top 3 and 24 among the top 5, with about 63 thousand tokens per question, with no regression.
 - Install from scratch through `setup` verified on Windows (88 s) and Linux; and, on Windows, the full path up to the search through the MCP server with the real Jev on a 27-file project: right file 1st in 5 of 6 questions and among the top 3 in 6 of 6.
+
+## Changes in 0.6.0
+
+- **Second Brain.** `memory_recall` and `project_find` now read a vault of Markdown notes (Obsidian, Foam, SilverBullet, Logseq style) and return the notes together with the code files they link to. Graphify groups the notes and the linked code into communities; Jev picks. The optional `note_capture` tool exists only with `brain.inbox`. Nothing changes for projects without a `brain` key. Privacy: private notes never leave the machine; by default only cards go to Jev, and note text goes only with `"privacy": "completo"`.
+- 138 automatic tests, 0 failures, without a key.
+
+### Measurement
+
+Dataset in [bench/second-brain](../bench/second-brain), fictitious and synthetic: a vault of 218 notes (3 private and 3 templates excluded, so 212 indexed) and a Python billing project with 36 code files (47 with `__init__`). 40 questions in Portuguese: 14 paraphrase, 6 direct, 6 about a superseded decision, 6 where the code is two links away, 6 with no answer in the vault and 2 personal. 60 notes link to code; Graphify grouped the vault and the linked code into 13 communities. The token budget was 1,500 and the Jev price US$0.042 per million input tokens. Single runs on 19 Nov 2026 with the real Jev. "Baseline" is plugin 0.5.2 with the same notes copied into a flat memory folder.
+
+| Mode | First place (34 with answer) | In the answer (34) | No-answer cases right (6) | Code files right (32 cases with code) | `project_find` top 5 has the file (32) | Returned tokens (mean) | Jev tokens per query | Cost per query | Latency |
+|---|---|---|---|---|---|---|---|---|---|
+| Baseline, no key | 13 | 32 | 0 | — (0.5.2 returns no code from notes) | — | 1473 | 0 | 0 | 0.53 s |
+| Baseline, Jev (cards) | 22 | 31 | 6 | — | — | 399 | ~28,200 | ~US$0.0012 | 3.5 s |
+| 0.6.0, no key | 20 | 30 | 0 | 31 | 17 | 1470 | 0 | 0 | 0.60 s |
+| 0.6.0, Jev, privacy `ficha` (default) | 26 | 31 | 5 | 30 | 31 | 555 | ~24,300 | ~US$0.0010 | 1.35 s |
+| 0.6.0, Jev, privacy `completo` | 29 | 33 | 6 | 31 | 32 | 570 | ~27,500 | ~US$0.0012 | 1.6 s |
+
+First place by type with 0.6.0 and Jev, `completo`: paraphrase 12/14, direct 5/6, superseded 5/6, code two links away 5/6, personal 2/2. With `ficha`: 12/14, 5/6, 3/6, 4/6, 2/2. Private-note marker leaks: 0 in every mode (the marker was searched in the full JSON of every result).
+
+The superseded-decision ordering rule (the current decision goes right before the old one, and is pulled in if missing) was added after a first run on this same set. In that first run, `completo` had first place 3/6 on superseded decisions, and `ficha` 3/6 on them and 13/14 on paraphrase. The paraphrase difference in `ficha` (13 to 12) is variation between runs: the rule does not touch it. Both runs are kept in the folder (`resultado-jev-*-antes-da-correcao.json` is the first one). The remaining misses in `ficha` come from meeting and incident notes ranked above the decision, not from ordering.
+
+Reproduce with the commands in `bench/second-brain/README.md`; the runs without a key were repeated on 19 Nov 2026 and gave the same ranking as the stored results (only latency differs).
+
+### Limits of this measurement
+
+- The notes and the questions are synthetic and were written by the same AI author, so the vocabulary of one matches the other more than in a real vault: the numbers are optimistic.
+- Small set (40 questions, 6 per type): a difference of one or two cases is within run-to-run variation. Each mode was run once.
+- Local mode always fills the budget with what it has, so it can never answer "nothing found" (0 of 6) and "in the answer" is inflated; the figure that matters there is first place.
+- The Jev modes send the fictitious vault to TypeSafe. The private-note marker did not appear in any returned result.
+- Code links depend on file names, paths and symbols written in the notes, and on the code index.
+- macOS was not rechecked for this release; the automatic test on GitHub covers it.
