@@ -18,7 +18,7 @@
   "data": "fictional data in automated tests; real-service measurements used fictional data plus one private project of the tester",
   "hostSessions": {
     "codex": "not executed",
-    "claudeCode": "not executed"
+    "claudeCode": "2026-11-19: one real non-interactive session (Claude Code 2.1.325, -p) with the MCP from .mcp.json; memory_recall and note_capture used, note written, re-indexed and found again (see docs/COMPATIBILITY.md, 0.6.0)"
   },
   "notRepeatedSince_0.1.1": [
     "claude plugin validate",
