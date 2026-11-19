@@ -84,3 +84,27 @@ def extra():
   assert.equal((await core.update(root, { full: true })).project.mode, 'full');
   assert.deepEqual((await readdir(resolve(root, '.jev-graphify'))).filter(n => n.includes('stage')), []);
 });
+test('Graphify REAL agrupa o Second Brain (notas + código) em comunidades e cai para pastas sem Python', { skip: !process.env.JEV_GRAPHIFY_PYTHON }, async t => {
+  const { root } = await fixture(t);
+  await writeFile(resolve(root, '.jev-graphify.json'), JSON.stringify({ version: 1, sources: ['policy.md'], skills: [], code: { roots: ['src'] }, brain: { roots: ['notes'] } }));
+  await mkdir(resolve(root, 'src'), { recursive: true }); await mkdir(resolve(root, 'notes/X'), { recursive: true }); await mkdir(resolve(root, 'notes/Y'), { recursive: true });
+  await writeFile(resolve(root, 'src/billing.py'), 'def round_invoice(x):\n    return round(x, 2)\n');
+  await writeFile(resolve(root, 'src/shipping.py'), 'def ship_parcel(x):\n    return x\n');
+  const notes = { 'X/A.md': '# A\nSee [[B]] and `round_invoice` in src/billing.py.', 'X/B.md': '# B\nBack to [[A]]. Uses billing.py.', 'Y/C.md': '# C\nSee [[D]] and `ship_parcel`.', 'Y/D.md': '# D\nBack to [[C]]. Uses shipping.py.', 'Y/Secret.md': '---\nprivate: true\n---\n# Secret\nhidden' };
+  for (const [rel, text] of Object.entries(notes)) await writeFile(resolve(root, 'notes', rel), text);
+  const first = await core.update(root);
+  assert.equal(first.project.status, 'updated'); assert.equal(first.brain.status, 'updated'); assert.equal(first.brain.clustering, 'graphify'); assert.equal(first.brain.notes, 4); assert.equal(first.brain.private, 1); assert.ok(!first.brain.fallback);
+  const load = async () => JSON.parse(await readFile(resolve(root, '.jev-graphify/brain.json'), 'utf8'));
+  const idx = await load(), at = k => idx.notes.find(n => n.key === 'notes/' + k);
+  assert.equal(idx.graphify.version, '0.9.107'); assert.ok(idx.graphify.communities >= 2);
+  assert.equal(at('X/A.md').nucleo, at('X/B.md').nucleo); assert.equal(at('Y/C.md').nucleo, at('Y/D.md').nucleo); assert.notEqual(at('X/A.md').nucleo, at('Y/C.md').nucleo);
+  assert.deepEqual(at('X/A.md').code.map(c => c.file), ['src/billing.py']); assert.ok(idx.nucleos.every(n => n.notes >= 1));
+  assert.equal((await core.update(root)).brain.status, 'unchanged'); assert.equal((await core.status(root)).brain.status, 'current');
+  assert.deepEqual((await readdir(resolve(root, '.jev-graphify'))).filter(n => n.includes('stage')), []);
+  // Python indisponível: a atualização não falha, agrupa por pasta e diz isso.
+  await writeFile(resolve(root, 'notes/X/B.md'), '# B\nBack to [[A]]. Changed.');
+  const fallback = await core.update(root, { python: resolve(root, 'missing-python') });
+  assert.equal(fallback.brain.status, 'updated'); assert.equal(fallback.brain.clustering, 'folders'); assert.match(fallback.brain.fallback, /Python not found/);
+  const folders = await load(); assert.equal(folders.graphify, null); assert.equal(folders.notes.find(n => n.key === 'notes/X/A.md').nucleo, folders.notes.find(n => n.key === 'notes/X/B.md').nucleo);
+  assert.notEqual(folders.notes.find(n => n.key === 'notes/X/A.md').nucleo, folders.notes.find(n => n.key === 'notes/Y/C.md').nucleo);
+});

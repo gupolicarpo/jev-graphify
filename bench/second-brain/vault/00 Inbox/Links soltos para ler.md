@@ -1,0 +1,4 @@
+- artigo sobre filas e backpressure
+- talk sobre idempotência em pagamentos
+- vídeo "o que é um CNAB"
+- thread sobre Pix MED (mecanismo especial de devolução)

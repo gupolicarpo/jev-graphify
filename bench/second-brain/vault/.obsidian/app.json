@@ -1,0 +1,8 @@
+{
+  "alwaysUpdateLinks": true,
+  "newFileLocation": "folder",
+  "newFileFolderPath": "00 Inbox",
+  "useMarkdownLinks": false,
+  "showFrontmatter": true,
+  "promptDelete": false
+}

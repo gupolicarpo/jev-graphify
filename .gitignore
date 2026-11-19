@@ -5,3 +5,6 @@ outputs/
 .env
 .venv-graphify/
 __pycache__/
+bench/second-brain/projeto/
+bench/second-brain/projeto-base/
+bench/second-brain/base-memoria/
