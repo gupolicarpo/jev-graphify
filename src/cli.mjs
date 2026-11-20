@@ -5,6 +5,7 @@ import * as core from './core.mjs';
 import { findSkill } from './skills.mjs';
 import { recall } from './memory.mjs';
 import { findInProject } from './project.mjs';
+import { contextPack } from './context.mjs';
 import { captureNote } from './brain.mjs';
 export function parseArgs(argv) {
   const args = [...argv], command = args.shift(); let project, input, skillsDir, noJev = false, autoMemory = true, privacy, allTools = false, dailyTokens, full = false; const memoryDirs = [], brainDirs = [];
@@ -28,7 +29,7 @@ export function parseArgs(argv) {
   return { command, project, input, skillsDir, noJev, memoryDirs, brainDirs, autoMemory, privacy, allTools, dailyTokens, full };
 }
 async function main() {
-  if (process.argv[2] === '--help') { console.log('node src/cli.mjs <setup|init|status|update|search|read|route|recover|skill|recall|find|capture|mcp> --project <folder> [--input <request.json>] [--skills-dir <folder>] [--memory-dir <folder>]... [--brain-dir <folder>]... [--no-auto-memory] [--privacy <completo|ficha>] [--no-jev] [--jev-daily-tokens <n>] [--all-tools] [--full]'); return; }
+  if (process.argv[2] === '--help') { console.log('node src/cli.mjs <setup|init|status|update|search|read|route|recover|skill|recall|find|context|capture|mcp> --project <folder> [--input <request.json>] [--skills-dir <folder>] [--memory-dir <folder>]... [--brain-dir <folder>]... [--no-auto-memory] [--privacy <completo|ficha>] [--no-jev] [--jev-daily-tokens <n>] [--all-tools] [--full]'); return; }
   const { command, project, input, skillsDir, noJev, memoryDirs, brainDirs, autoMemory, privacy, allTools, dailyTokens, full } = parseArgs(process.argv.slice(2));
   const options = { jev: !noJev, key: process.env.JEV_API_KEY, skillsDir, memoryDirs, ...(brainDirs.length ? { brainDirs } : {}), autoMemory, ...(privacy ? { privacy } : {}), ...(allTools ? { allTools } : {}), ...(dailyTokens !== undefined ? { dailyTokens } : {}) };
   if (command === 'setup') { const { setup } = await import('./setup.mjs'); console.log(JSON.stringify(await setup(project, { update: p => core.update(p, { ...(brainDirs.length ? { brainDirs } : {}) }) }), null, 2)); return; }
@@ -36,6 +37,7 @@ async function main() {
   let data = {};
   if (input) { const raw = await readFile(input); if (raw.length > 32768) throw Error('Request too large.'); data = JSON.parse(raw.toString('utf8')); }
   const handlers = { init: () => core.init(project), status: () => core.status(project, options), update: () => core.update(project, { full, ...(brainDirs.length ? { brainDirs } : {}) }), search: () => core.search(project, data.query, data.kind), read: () => core.read(project, data.id), route: () => core.route(project, data.task, options), recover: () => core.recover(project, data, options), skill: () => findSkill(project, data.task, options), recall: () => recall(project, data.query, { ...options, ...(data.budget ? { budget: data.budget } : {}), ...(data.deep === true ? { deep: true } : {}) }) };
+  handlers.context = () => contextPack(project, data.query, options);
   handlers.capture = () => captureNote(project, data, options);
   handlers.find = () => findInProject(project, data.query, { ...options, ...(data.top ? { top: data.top } : {}) });
   if (!handlers[command]) throw Error('Unknown command. Use --help.');
