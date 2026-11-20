@@ -157,6 +157,15 @@ test('privacidade: nota privada nunca vai ao Jev nem volta, em todas as etapas e
   const found = await findInProject(root, 'calc', { key, request: scripted().request });
   gone('project_find', JSON.stringify(found));
 });
+test('recall: codeMax limita os arquivos de código por nota (padrão 4)', async t => {
+  const files = ['src/a.py', 'src/b.py', 'src/c.py', 'src/d.py', 'src/e.py'];
+  const root = await vault(t, { 'Many.md': '---\ncode: [' + files.join(', ') + ']\n---\n# Many\nALTO: nota com muitos arquivos de código.\n' });
+  await codeIndex(root, Object.fromEntries(files.map(f => [f, ['s']])));
+  const get = async extra => (await recall(root, 'many code files', opts({ key, request: scripted().request, ...extra }))).items.find(i => i.source.endsWith('Many.md'));
+  assert.equal((await get({})).code.length, 4);
+  assert.deepEqual((await get({ codeMax: 2 })).code.map(c => c.file), ['src/a.py', 'src/b.py']);
+  assert.equal((await get({ codeMax: 5 })).code.length, 5);
+});
 test('recall com Jev: fichas das notas com Links e Code, código no topo, vizinhos e substituída', async t => {
   const root = await vault(t, notes, { roots: ['notes'], exclude: ['Templates'] });
   await codeIndex(root, { 'src/billing/calc.py': ['round_invoice()', 'Invoice'], 'src/util.py': ['x'] });

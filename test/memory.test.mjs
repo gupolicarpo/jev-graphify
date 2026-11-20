@@ -148,6 +148,23 @@ test('recall: segundo trecho que não cabe é pulado e o seguinte que cabe entra
   const r = await recall(root, 'tarefa', opts(root, { key, request: scripted().request, budget: 200 }));
   assert.deepEqual(r.items.map(i => i.source), ['memory/a.md', 'memory/c.md']); assert.equal(r.omitted, 1); assert.ok(r.items.every(i => !i.truncated));
 });
+test('recall: perSource e codeMax inválidos são recusados', async t => {
+  const { root } = await fixture(t);
+  await folder(root, 'mem', { 'a.md': 'ALTO texto' });
+  for (const bad of [0, -1, 1.5, '2', NaN]) await assert.rejects(recall(root, 'a', opts(root, { perSource: bad })), /Invalid number of passages per source\./);
+  for (const bad of [0, 13, 1.5, '4']) await assert.rejects(recall(root, 'a', opts(root, { codeMax: bad })), /Invalid number of code files per note \(1–12\)\./);
+  for (const ok of [{ perSource: 1 }, { codeMax: 12 }, { codeMax: 1, perSource: Infinity }]) await recall(root, 'a', opts(root, ok));
+});
+test('recall: perSource limita trechos por origem e deixa a outra origem entrar', async t => {
+  const { root } = await fixture(t);
+  const long = Array.from({ length: 4 }, (_, i) => '# S' + i + '\nALTO ' + String(i).repeat(1600)).join('\n');
+  await folder(root, 'mem', { 'a.md': long, 'b.md': 'MEDIO curto' });
+  const count = r => r.items.filter(i => i.source === 'memory/a.md').length;
+  const all = await recall(root, 'tarefa', opts(root, { key, request: scripted().request, budget: 6000 }));
+  assert.ok(count(all) > 2);
+  const r = await recall(root, 'tarefa', opts(root, { key, request: scripted().request, budget: 6000, perSource: 2 }));
+  assert.equal(count(r), 2); assert.ok(r.items.some(i => i.source === 'memory/b.md')); assert.ok(r.omitted >= 2);
+});
 test('recall: 700 arquivos viram várias requisições de até 300 perguntas', async t => {
   const { root } = await fixture(t), calls = [], many = {};
   for (let i = 0; i < 700; i++) many['m' + String(i).padStart(3, '0') + '.md'] = i === 5 ? 'ALTO achado' : 'texto ' + i;

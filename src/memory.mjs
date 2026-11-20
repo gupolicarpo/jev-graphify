@@ -149,13 +149,16 @@ function batches(questions) {
   if (n) out.push(cur);
   return out;
 }
-function pack(ranked, budget) {
+// perSource limita os trechos de uma mesma origem: na ficha todos os trechos de um arquivo têm a mesma nota, e um documento longo ocuparia tudo.
+function pack(ranked, budget, perSource = Infinity) {
   let room = Math.floor(budget * CHARS_PER_TOKEN), omitted = 0;
-  const out = [];
+  const out = [], per = new Map();
   for (const [i, { item, relevance }] of ranked.entries()) {
     if (out.length >= MAX_RETURNED || room < 200) { omitted += ranked.length - i; break; }
+    if ((per.get(item.source) ?? 0) >= perSource) { omitted++; continue; }
     const fits = item.text.length <= room;
     if (!fits && out.length) { omitted++; continue; }
+    per.set(item.source, (per.get(item.source) ?? 0) + 1);
     const text = fits ? item.text : item.text.slice(0, room);
     out.push({ kind: item.kind, source: item.source, path: item.path, title: item.title, part: item.part, parts: item.parts, relevance, text, truncated: !fits });
     room -= text.length;
@@ -170,12 +173,14 @@ function noteItems(n) {
   return parts.length ? parts.map((c, i) => make(c, i, parts.length)) : [make({ text: n.description || n.title }, 0, 1)];
 }
 export async function recall(root, query, options = {}) {
-  const { budget = 1500, jev = true, key, request, signal, timeoutMs, memoryDirs, autoMemory, home, topFiles = TOP_FILES, deep = false, nucleos: nucleosMax = 6 } = options;
+  const { budget = 1500, jev = true, key, request, signal, timeoutMs, memoryDirs, autoMemory, home, topFiles = TOP_FILES, deep = false, nucleos: nucleosMax = 6, codeMax = 4, perSource = Infinity } = options;
   if (typeof query !== 'string' || !query.trim() || query.length > 4000) throw Error('Invalid query (1–4000 characters).');
   if (!Number.isInteger(budget) || budget < 200 || budget > 8000) throw Error('Invalid token budget (200–8000).');
   if (!Number.isInteger(topFiles) || topFiles < 1 || topFiles > 50) throw Error('Invalid number of files (1–50).');
   if (!Number.isInteger(nucleosMax) || nucleosMax < 1 || nucleosMax > 30) throw Error('Invalid number of clusters (1–30).');
   if (typeof deep !== 'boolean') throw Error('Invalid deep option: use true or false.');
+  if (!Number.isInteger(codeMax) || codeMax < 1 || codeMax > 12) throw Error('Invalid number of code files per note (1–12).');
+  if (perSource !== Infinity && (!Number.isInteger(perSource) || perSource < 1)) throw Error('Invalid number of passages per source.');
   root = await realpath(root);
   const privacy = await privacyOf(root, options);
   const mem = await loadMemory(root, { memoryDirs, autoMemory, home }), proj = await loadProject(root);
@@ -215,7 +220,7 @@ export async function recall(root, query, options = {}) {
   // Ponteiro "perto" que já veio no resultado (trecho ou related) só gasta token.
   const withNear = (result, near) => { const seen = new Set([...result.items, ...result.related].map(x => x.source)); return { ...result, near: near.filter(x => !seen.has(x.source)) }; };
   const finish = (status, ranked, extra = {}) => {
-    const { items: out, omitted } = pack(current(ranked), budget);
+    const { items: out, omitted } = pack(current(ranked), budget, perSource);
     // Ponteiros [[nome]] entre memórias: só arquivos ainda não devolvidos.
     const have = new Set(out.map(i => i.kind + '\0' + i.source)), byName = new Map(), related = [];
     for (const it of mem.items) if (!byName.has(it.name.toLowerCase())) byName.set(it.name.toLowerCase(), it);
@@ -223,7 +228,7 @@ export async function recall(root, query, options = {}) {
       const f = byName.get(m[1].trim().toLowerCase());
       if (f && !have.has('memory\0' + f.source) && related.length < 5) { have.add('memory\0' + f.source); related.push({ kind: 'memory', source: f.source, title: f.name }); }
     }
-    const more = brain ? brainExtras(brain, root, out, known, related) : null;
+    const more = brain ? brainExtras(brain, root, out, known, related, codeMax) : null;
     return {
       status, ...extra, items: out, omitted, related: more ? more.related : related, ...(more ? { code: more.code } : {}), corpus, returned_tokens_estimate: Math.ceil(out.reduce((n, i) => n + i.text.length, 0) / CHARS_PER_TOKEN),
       privacy, requests, usage: { input_tokens: input }, ...skipped, trust,

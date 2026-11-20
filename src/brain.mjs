@@ -419,7 +419,7 @@ export function codeOf(brain, root, i, max = 4) {
   return out;
 }
 // Acrescenta ao resultado o que só existe com o Second Brain: código, links, vizinhos e substituições.
-export function brainExtras(brain, root, out, known, pointers) {
+export function brainExtras(brain, root, out, known, pointers, codeMax = 4) {
   const returned = [], done = new Set(), codeUnion = new Map();
   for (const o of out) if (o.kind === 'note' && brain.bySource.has(o.source) && !returned.includes(brain.bySource.get(o.source))) returned.push(brain.bySource.get(o.source));
   const have = new Set(returned);
@@ -427,7 +427,7 @@ export function brainExtras(brain, root, out, known, pointers) {
     const i = o.kind === 'note' ? brain.bySource.get(o.source) : undefined;
     if (i === undefined || done.has(i)) continue;
     done.add(i);
-    const n = brain.notes[i], code = codeOf(brain, root, i), l = brain.links[i];
+    const n = brain.notes[i], code = codeOf(brain, root, i, codeMax), l = brain.links[i];
     if (code.length) o.code = code;
     for (const c of code) if (!codeUnion.has(c.file)) codeUnion.set(c.file, { file: c.file, path: c.path, via: c.via });
     const links = [...new Set([...l.out, ...l.in].filter(j => !have.has(j)).map(j => brain.notes[j].title))].slice(0, 5);
