@@ -2,8 +2,7 @@
 import { resolve } from 'node:path';
 import { mkdir, appendFile } from 'node:fs/promises';
 import { optionsFromEnv } from './env.mjs';
-import { contextPack } from './context.mjs';
-import { hash, safePath } from './files.mjs';
+import { hash, safePath, hookMode } from './files.mjs';
 const MAX_STDIN = 1048576;
 async function readInput() {
   const chunks = []; let size = 0;
@@ -18,10 +17,13 @@ async function main() {
   const project = env.JEV_GRAPHIFY_PROJECT || env.CLAUDE_PROJECT_DIR || (typeof input?.cwd === 'string' ? input.cwd : undefined);
   const built = optionsFromEnv({ ...env, ...(project ? { JEV_GRAPHIFY_PROJECT: project } : {}) }, []);
   if (built.error) return;
+  const mode = await hookMode(built.project, env);
+  if (!mode) return;
+  const { contextPack } = await import('./context.mjs');
   const limit = Number(env.JEV_GRAPHIFY_HOOK_TIMEOUT_MS) > 0 ? Number(env.JEV_GRAPHIFY_HOOK_TIMEOUT_MS) : 45000;
   const controller = new AbortController(), timer = setTimeout(() => controller.abort(), limit);
   let r;
-  try { r = await contextPack(built.project, prompt, { ...built.options, signal: controller.signal }); }
+  try { r = await contextPack(built.project, prompt, { ...built.options, contextMode: mode, signal: controller.signal }); }
   finally { clearTimeout(timer); }
   if (r.text) process.stdout.write(JSON.stringify({ hookSpecificOutput: { hookEventName: 'UserPromptSubmit', additionalContext: r.text } }) + '\n');
   try {

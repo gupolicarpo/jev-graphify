@@ -1,6 +1,6 @@
 {
-  "date": "2026-11-19",
-  "version": "0.6.0",
+  "date": "2026-11-22",
+  "version": "0.7.0",
   "environment": {
     "os": "Windows x64",
     "node": "24.22.3",
@@ -9,16 +9,16 @@
     "graphifyy": "0.9.107",
     "mcpSdk": "2.4.0"
   },
-  "unitAndMcpTests": 138,
-  "realGraphifyIntegrationTests": 3,
+  "unitAndMcpTests": 172,
+  "realGraphifyIntegrationTests": "not re-run for 0.7.0 (3 passed on 0.6.0)",
   "secondBrainMeasurement": "2026-11-19, real Jev service, fictional vault in bench/second-brain (212 indexed notes, 40 questions), modes local/ficha/completo plus 0.5.2 baseline; see docs/COMPATIBILITY.md",
-  "demo": "real failing/passing Python test; real Graphify; simulated Jev, review and executor",
-  "cleanInstallFromZip": "not repeated for 0.5.0 (last repeated on 0.4.0: npm ci and unit/MCP tests)",
+  "demo": "not re-run for 0.7.0 (passed on 0.6.0)",
+  "cleanInstallFromZip": "not repeated for 0.7.0 (last repeated on 0.4.0: npm ci and unit/MCP tests)",
   "realJevCalls": "yes, with the published service on 2026-11-12: skill selection, memory recall and project search (see docs/COMPATIBILIDADE.md for data, counts and limits); jev_route and memory_recover not exercised against the real service",
   "data": "fictional data in automated tests; real-service measurements used fictional data plus one private project of the tester",
   "hostSessions": {
     "codex": "not executed",
-    "claudeCode": "2026-11-19: one real non-interactive session (Claude Code 2.1.325, -p) with the MCP from .mcp.json; memory_recall and note_capture used, note written, re-indexed and found again (see docs/COMPATIBILITY.md, 0.6.0)"
+    "claudeCode": "2026-11-19: one real non-interactive session (Claude Code 2.1.325, -p) with the MCP from .mcp.json; memory_recall and note_capture used, note written, re-indexed and found again (see docs/COMPATIBILITY.md, 0.6.0); not repeated for 0.7.0"
   },
   "notRepeatedSince_0.1.1": [
     "claude plugin validate",
@@ -32,7 +32,9 @@
     "python": "3.12.3",
     "unitAndMcpTests": "117/117",
     "realGraphifyIntegrationTests": "2/2",
-    "demo": "passed"
+    "demo": "passed",
+    "note": "not repeated for 0.7.0"
   },
-  "macosCheck": "passed on GitHub Actions (macos-latest, Node 22, Python 3.13): unit/MCP tests, real Graphify tests and demo"
+  "macosCheck": "not repeated for 0.7.0 (last passed on GitHub Actions for an earlier version)",
+  "hookMeasurements": "2026-11-22: real C# mod project of the tester (30 paired sessions per model) and large synthetic vault (3,005 notes, 16 questions x 2 reps); see docs/COMPATIBILITY.md, 0.7.0. Bench not included for this run"
 }

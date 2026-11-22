@@ -225,7 +225,7 @@ export async function contextPack(root, prompt, options = {}) {
     stats.snippets = snippets.map(({ file, from, to, relevance }) => ({ file, from, to, relevance }));
     if (options.debug) stats.debug = { found: (found?.items ?? []).map(i => ({ file: i.file, relevance: i.relevance })), foundStatus: found?.status, strategy: found?.strategy, recallStatus: recalled?.status, recalled: (recalled?.items ?? []).map(n => ({ source: n.source, relevance: n.relevance })), linked: recalled?.code ?? [], sections: [...pool].sort((a, b) => b.score - a.score).slice(0, 15).map(s => ({ file: s.file, from: s.from, to: s.to, score: s.score, local: s.local })) };
     if (!notes.length && !others.length && !snippets.length && !outlines.length) return done('none', { confidence, strategy });
-    const text = options.contextMode === 'full' ? render({ confidence, notes, snippets, others, outlines }) : renderCompact({ confidence, notes, snippets, others: [...outlines.filter(o => !withSnippet.has(o.file)).map(o => ({ file: o.file, symbols: symbols.get(o.file) ?? [] })), ...others] });
+    const text = options.contextMode !== 'compact' ? render({ confidence, notes, snippets, others, outlines }) : renderCompact({ confidence, notes, snippets, others: [...outlines.filter(o => !withSnippet.has(o.file)).map(o => ({ file: o.file, symbols: symbols.get(o.file) ?? [] })), ...others] });
     stats.injectedChars = text.length;
     return done('ok', { confidence, strategy, text });
   } catch (e) {

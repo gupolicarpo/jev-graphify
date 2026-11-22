@@ -239,7 +239,7 @@ function runHook(input, extra = {}) {
 }
 test('hook.mjs: stdin JSON vira additionalContext e uma linha em hook.jsonl, sem texto do prompt', async t => {
   const { root } = await project(t);
-  const r = runHook(JSON.stringify({ prompt: query, cwd: root, session_id: 's1', hook_event_name: 'UserPromptSubmit' }), { JEV_GRAPHIFY_AUTO_MEMORY: '0' });
+  const r = runHook(JSON.stringify({ prompt: query, cwd: root, session_id: 's1', hook_event_name: 'UserPromptSubmit' }), { JEV_GRAPHIFY_AUTO_MEMORY: '0', JEV_GRAPHIFY_HOOK: '1' });
   assert.equal(r.status, 0, r.stderr);
   const out = JSON.parse(r.stdout);
   assert.deepEqual(Object.keys(out), ['hookSpecificOutput']); assert.equal(out.hookSpecificOutput.hookEventName, 'UserPromptSubmit');
@@ -252,14 +252,14 @@ test('hook.mjs: stdin JSON vira additionalContext e uma linha em hook.jsonl, sem
 });
 test('hook.mjs: sem índice, entrada inválida ou desligado saem com 0 e sem saída', async t => {
   const { root } = await project(t, { configured: false });
-  const r = runHook(JSON.stringify({ prompt: query, cwd: root }), { JEV_GRAPHIFY_AUTO_MEMORY: '0' });
+  const r = runHook(JSON.stringify({ prompt: query, cwd: root }), { JEV_GRAPHIFY_AUTO_MEMORY: '0', JEV_GRAPHIFY_HOOK: '1' });
   assert.equal(r.status, 0); assert.equal(r.stdout, '');
   const log = JSON.parse((await readFile(resolve(root, '.jev-graphify/hook.jsonl'), 'utf8')).trim());
   assert.equal(log.status, 'no_index');
   const bad = runHook('not json'); assert.equal(bad.status, 0); assert.equal(bad.stdout, ''); assert.equal(bad.stderr, '');
   const off = runHook(JSON.stringify({ prompt: query, cwd: root }), { JEV_GRAPHIFY_HOOK: '0' }); assert.equal(off.status, 0); assert.equal(off.stdout, '');
 });
-const compactOpts = extra => ({ key, privacy: 'completo', memoryDirs: [], ...extra });
+const compactOpts = extra => ({ key, privacy: 'completo', memoryDirs: [], contextMode: 'compact', ...extra });
 test('compacto: Where to look com arquivo e intervalo, sem Code excerpts nem File outlines', async t => {
   const { root } = await project(t, { hot: [3] });
   const r = await contextPack(root, query, compactOpts({ request: fake() }));

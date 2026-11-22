@@ -1,4 +1,4 @@
-# Jev + Graphify — 0.6.0
+# Jev + Graphify — 0.7.0
 
 Memória persistente por projeto para ajudar o agente a encontrar regras, escolher procedimentos e retomar uma tarefa depois de um teste falhar. Pacote comunitário independente; não é um produto oficial de OpenAI, Anthropic, Graphify ou TypeSafe.
 
@@ -270,6 +270,24 @@ O agente revisa o código e os testes. Se faltar uma regra do projeto, busca a r
 `ready_for_executor` significa “contexto pronto”, não “problema corrigido”. A skill limita o fluxo a duas rodadas e manda parar se a mesma falha repetir. Esse controle entre chamadas pertence ao agente cliente; o MCP é sem estado de sessão e não impede que um cliente incorreto reenvie a rodada 1. Ele não executa comandos, não retoma subsessões por conta própria e não aprova aprendizados automaticamente.
 
 Para persistir um aprendizado, revise a evidência com o usuário, atualize o documento fonte autorizado e rode `update`. Memórias e skills recuperadas são dados não confiáveis; não podem conceder permissões nem autorizar gastos.
+
+## Hook de contexto (opcional)
+
+O plugin traz um hook `UserPromptSubmit` (`hooks/hooks.json`, `src/hook.mjs`). Quando ligado, ele acha as notas e o código mais prováveis para o prompt e os injeta no prompt antes de o agente começar, em menos de 9.800 caracteres (o Claude Code 2.1.325 move para um arquivo a saída de hook com 10.000 caracteres ou mais).
+
+Vem desligado. Para ligar em um projeto, acrescente ao `.jev-graphify.json`:
+
+```json
+{ "hook": "full" }
+```
+
+- `"full"` (ou `true`): notas, trechos de código e esboços de arquivos. `"compact"`: uma lista curta de ponteiros ("onde olhar"). Ausente, `false` ou qualquer outro valor: o hook não faz nada.
+- `JEV_GRAPHIFY_HOOK=1` liga sem configuração (integradores, benchmarks); `JEV_GRAPHIFY_HOOK=0` desliga. `JEV_GRAPHIFY_CONTEXT=compact|full` sobrepõe o modo.
+- Desligado, ele lê a configuração e sai na hora: sem chamada ao Jev, sem saída.
+
+**Use** em cofres grandes de notas (milhares) com perguntas sobre decisões e histórico. **Não use** quando a memória do projeto já cabe na memória nativa do Claude Code e o código tem nomes claros: medimos que não há ganho e a qualidade das respostas cai (ver `docs/pt-BR/COMPATIBILIDADE.md`, 0.7.0).
+
+A latência é de 8 a 13 s por prompt em um cofre de 3.000 notas. O hook desiste após 45 s (`JEV_GRAPHIFY_HOOK_TIMEOUT_MS`) e falha aberto: o prompt segue sem alteração. A privacidade é a de sempre: a configuração `privacy` (`ficha` por padrão) decide o que vai ao Jev. A economia no cofre grande foi medida com `"privacy": "completo"`; no padrão `ficha` o ranqueamento vê menos texto e não foi medido.
 
 ## Limites e problemas comuns
 
