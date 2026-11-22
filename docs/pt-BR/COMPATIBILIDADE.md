@@ -1,4 +1,4 @@
-# Compatibilidade verificada — 0.6.0 (histórico desde a 0.1.1)
+# Compatibilidade verificada — 0.7.0 (histórico desde a 0.1.1)
 
 Data: 12/11/2026. Ambiente: Windows x64, Node.js 24.19.0, npm 11.17.0, CPython 3.13.15. Todos os dados usados foram fictícios. Nenhuma chamada real paga a Jev ou LLM foi feita.
 
@@ -145,3 +145,24 @@ Para reproduzir, use os comandos de `bench/second-brain/README.md`; as execuçõ
 - As ligações com código dependem de nomes de arquivo, caminhos e símbolos escritos nas notas e do índice de código.
 - O macOS não foi reverificado para esta versão; o teste automático no GitHub o cobre.
 - **Sessão real de agente com `note_capture`** (19/11/2026, depois da release): Claude Code 2.1.325 em modo não interativo (`-p`, modelo `claude-opus-5-5`), numa cópia do projeto e do cofre do bench com `brain.inbox` definido e o servidor MCP vindo do `.mcp.json` do projeto. O pedido foi descobrir por que o total da fatura é arredondado do jeito atual e registrar a conclusão. O agente chamou `memory_recall` (Jev, `ficha`), leu `billing/rounding.py` e `billing/invoice.py` e chamou `note_capture` uma vez: 5 turnos, 28 s. A nota foi gravada em `00 Inbox/agent/2026-11-19 por-que-o-total-da-fatura-e-arredondado-por-item.md`, com frontmatter (`type: agent-note`, etiquetas, `code:` com 3 arquivos) e 6 `[[links]]`; a comparação de hashes do cofre antes e depois mostrou que essa foi a única mudança. Depois do `update` a nota entrou no índice (213 notas, agrupamento do Graphify), os 6 links e os 3 arquivos de código foram resolvidos, a D-19 ganhou o link de volta, o `memory_recall` local a devolveu em primeiro numa pergunta sobre a conclusão do agente e o `project_find` a listou entre as notas de `billing/rounding.py`. Uma sessão e uma nota; o Codex não foi testado.
+
+## Mudanças na 0.7.0
+
+- **O hook de contexto é opcional e o modo cheio é o padrão.** O hook `UserPromptSubmit` só age quando o `.jev-graphify.json` tem `"hook": "full"` (ou `true`) ou `"compact"`, ou quando `JEV_GRAPHIFY_HOOK=1`; `JEV_GRAPHIFY_HOOK=0` força desligado e `JEV_GRAPHIFY_CONTEXT` sobrepõe o modo. `contextPack` agora usa `full` por padrão (era `compact`). Valor inválido em `hook` conta como desligado.
+- **Medição 1: um projeto real de mod em C# do testador** (cerca de 1.945 arquivos de código e cerca de 187 notas de memória já carregadas pela memória nativa do Claude Code). 30 sessões pareadas por modelo, nota cega de 0 a 10, custos incluem o Jev:
+
+| Hook | Opus 5.5 custo / qualidade | Sonnet 5.5 custo / qualidade |
+|---|---|---|
+| full | +0,6% / -0,90 | +6,9% / -0,37 |
+| compact | -5,7% / -0,70 | +3,6% / -0,20 |
+
+  Causa: a memória nativa já cobre as notas, e a pré-seleção ancora o agente (por exemplo, ela pôs em primeiro lugar um sistema aposentado e não registrado, e todas as respostas com hook descreveram código morto). Sem ganho, qualidade menor.
+- **Medição 2: cofre sintético grande** (código do bench "faturamento" mais 3.005 notas: 218 notas reais do bench e 2.787 distratores semeados, cerca de 1,28 milhão de tokens; sem memória nativa; 16 perguntas respondidas por uma nota, 2 repetições cada). Critério fixado antes de rodar: pelo menos 10% mais barato, mais de 2 erros-padrão, perda de qualidade de no máximo 0,3.
+
+| Hook | Opus 5.5 custo / qualidade | Sonnet 5.5 custo / qualidade |
+|---|---|---|
+| full | -33,8% +/-4,6 / -0,06 (9,84 vs 9,91), 29 de 32 pares mais baratos | -30,0% +/-3,4 / +0,13 (9,84 vs 9,72), 30 de 32 |
+| compact | -25,5% +/-4,2 / -0,22 | -24,7% +/-2,8 / -0,16 |
+
+  Busca do Jev com 3.000 notas: a nota esperada em primeiro lugar em 13 de 16 perguntas (12 de 16 no cofre de 218 notas). Limites: os distratores são sintéticos e fora do assunto, as respostas estão em uma única nota, e ainda não foi testado um cofre grande real. O gerador de distratores fica fora deste repositório e o bench não vai incluído nesta versão.
+- 172 testes automáticos (`npm test`), incluindo `test/hook.test.mjs` para as regras de opt-in.

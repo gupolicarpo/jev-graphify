@@ -167,6 +167,24 @@ Try it from the command line with a file containing `{ "query": "where is the in
 node /path/to/jev-graphify/src/cli.mjs find --project /path/to/your-project --input query.json
 ```
 
+## Context hook (opt-in)
+
+The plugin ships a `UserPromptSubmit` hook (`hooks/hooks.json`, `src/hook.mjs`). When it is on, it finds the notes and code most likely to matter for the prompt and injects them into the prompt before the agent starts, in under 9,800 characters (Claude Code 2.1.325 moves hook output of 10,000 characters or more to a file).
+
+It is off by default. To turn it on for a project, add to `.jev-graphify.json`:
+
+```json
+{ "hook": "full" }
+```
+
+- `"full"` (or `true`): notes, code excerpts and file outlines. `"compact"`: a shorter pointer list ("where to look"). Absent, `false` or any other value: the hook does nothing.
+- `JEV_GRAPHIFY_HOOK=1` forces it on without config (integrators, benchmarks); `JEV_GRAPHIFY_HOOK=0` forces it off. `JEV_GRAPHIFY_CONTEXT=compact|full` overrides the mode.
+- When off, it reads the config and returns at once: no Jev call, no output.
+
+**Use it** on large note vaults (thousands of notes) when you ask about decisions and history. **Do not use it** when the project memory already fits Claude Code's native memory and the code is well named: we measured no gain and lower answer quality (see `docs/COMPATIBILITY.md`, 0.7.0).
+
+Latency is 8 to 13 s per prompt on a 3,000-note vault. The hook gives up after 45 s (`JEV_GRAPHIFY_HOOK_TIMEOUT_MS`) and fails open: the prompt goes through unchanged. Privacy is the same as everywhere else: the `privacy` setting (`ficha` by default) decides what goes to Jev. The large-vault savings were measured with `"privacy": "completo"`; with the default `ficha` the ranking sees less text and was not measured.
+
 ## Privacy and cost controls
 
 - **Code search** sends the question, file paths and symbol names to TypeSafe. File contents are never sent.

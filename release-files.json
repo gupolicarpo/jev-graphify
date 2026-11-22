@@ -66,6 +66,7 @@
   "test/context.test.mjs",
   "test/core.test.mjs",
   "test/graphify.integration.mjs",
+  "test/hook.test.mjs",
   "test/helpers.mjs",
   "test/jev.test.mjs",
   "test/mcp.test.mjs",

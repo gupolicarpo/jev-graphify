@@ -69,6 +69,20 @@ export async function privacyOf(root, options = {}) {
   if (!['completo', 'ficha'].includes(p)) throw Error('Invalid privacy: use completo or ficha.');
   return p;
 }
+// Hook de contexto (opt-in): env JEV_GRAPHIFY_HOOK=0 desliga, =1 liga (cheio); senão a chave "hook" do .jev-graphify.json
+// ("full", "compact" ou true = full). Ausente, false ou inválido = desligado. JEV_GRAPHIFY_CONTEXT sobrepõe o modo.
+export async function hookMode(root, env = process.env) {
+  if (env.JEV_GRAPHIFY_HOOK === '0') return null;
+  let value;
+  if (env.JEV_GRAPHIFY_HOOK === '1') value = true;
+  else {
+    try { value = JSON.parse(await textFile(root, '.jev-graphify.json', true, 32768))?.hook; }
+    catch { return null; }
+  }
+  const mode = value === true ? 'full' : ['full', 'compact'].includes(value) ? value : null;
+  if (!mode) return null;
+  return ['full', 'compact'].includes(env.JEV_GRAPHIFY_CONTEXT) ? env.JEV_GRAPHIFY_CONTEXT : mode;
+}
 export async function jevGate(root, options = {}) {
   if (options.jev === false) return { jev: false, reason: 'turned_off' };
   if (!options.key) return { jev: false, reason: 'no_key' };

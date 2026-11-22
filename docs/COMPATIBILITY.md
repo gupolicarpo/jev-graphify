@@ -1,4 +1,4 @@
-# Verified compatibility — 0.6.0 (history since 0.1.1)
+# Verified compatibility — 0.7.0 (history since 0.1.1)
 
 Date: 12 Nov 2026. Environment: Windows x64, Node.js 24.19.0, npm 11.17.0, CPython 3.13.15. All data used was fictitious. No real paid call to Jev or to an LLM was made.
 
@@ -145,3 +145,24 @@ Reproduce with the commands in `bench/second-brain/README.md`; the runs without 
 - Code links depend on file names, paths and symbols written in the notes, and on the code index.
 - macOS was not rechecked for this release; the automatic test on GitHub covers it.
 - **Real agent session with `note_capture`** (19 Nov 2026, after the release): Claude Code 2.1.325 in non-interactive mode (`-p`, model `claude-opus-5-5`), on a copy of the bench project and vault with `brain.inbox` set and the MCP server from a project `.mcp.json`. Asked why the invoice total is rounded the way it is and to record the conclusion, the agent called `memory_recall` (Jev, `ficha`), read `billing/rounding.py` and `billing/invoice.py`, and called `note_capture` once: 5 turns, 28 s. The note landed in `00 Inbox/agent/2026-11-19 por-que-o-total-da-fatura-e-arredondado-por-item.md` with frontmatter (`type: agent-note`, tags, `code:` with 3 files) and 6 `[[links]]`; a hash comparison of the vault before and after showed that this was the only change. After `update` the note was indexed (213 notes, Graphify clustering), its 6 links and 3 code files resolved, D-19 gained the backlink, the local `memory_recall` returned it first for a question about the agent's conclusion, and `project_find` listed it among the notes of `billing/rounding.py`. One session, one note; the Codex host was not tested.
+
+## Changes in 0.7.0
+
+- **Context hook is opt-in, full mode is the default.** The `UserPromptSubmit` hook only acts when `.jev-graphify.json` has `"hook": "full"` (or `true`) or `"compact"`, or when `JEV_GRAPHIFY_HOOK=1`; `JEV_GRAPHIFY_HOOK=0` forces it off and `JEV_GRAPHIFY_CONTEXT` overrides the mode. `contextPack` now defaults to `full` (it was `compact`). Invalid `hook` values count as off.
+- **Measurement 1: a real C# mod project of the tester** (about 1,945 code files and about 187 memory notes already loaded by Claude Code's native memory). 30 paired sessions per model, blind-graded 0 to 10, costs include Jev:
+
+| Hook | Opus 5.5 cost / quality | Sonnet 5.5 cost / quality |
+|---|---|---|
+| full | +0.6% / -0.90 | +6.9% / -0.37 |
+| compact | -5.7% / -0.70 | +3.6% / -0.20 |
+
+  Cause: the native memory already covers the notes, and the pre-selection anchors the agent (for example it ranked a retired, unregistered system first, and every hooked answer described dead code). No gain, lower quality.
+- **Measurement 2: large synthetic vault** (bench "faturamento" code plus 3,005 notes: 218 real bench notes and 2,787 seeded distractors, about 1.28 million tokens; no native memory; 16 questions answered by a note, 2 repetitions each). Criterion fixed before running: at least 10% cheaper, more than 2 standard errors, quality loss of at most 0.3.
+
+| Hook | Opus 5.5 cost / quality | Sonnet 5.5 cost / quality |
+|---|---|---|
+| full | -33.8% +/-4.6 / -0.06 (9.84 vs 9.91), 29 of 32 pairs cheaper | -30.0% +/-3.4 / +0.13 (9.84 vs 9.72), 30 of 32 |
+| compact | -25.5% +/-4.2 / -0.22 | -24.7% +/-2.8 / -0.16 |
+
+  Jev retrieval at 3,000 notes: the expected note first in 13 of 16 questions (12 of 16 on the 218-note vault). Limits: the distractors are synthetic and off-topic, the answers sit in a single note, and no real large vault was tested yet. The distractor generator lives outside this repository and the bench is not included for this run.
+- 172 automatic tests (`npm test`), including `test/hook.test.mjs` for the opt-in rules.
